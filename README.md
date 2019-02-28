@@ -7,4 +7,4 @@
 
 * 开源的[eclipse](https://www.eclipse.org/)，安装失败，原因：小飞机飞不起来
 * 微软的[VS code(Visual Studio Code)](https://code.visualstudio.com)我用过很长一段时间了，快捷键也很熟悉了，总感觉默认的主题不好看，[配置](https://github.com/GoodSix/Hello/blob/master/IDE/VS%20Code/config.json)了好久。
-* [IDEA](https://www.jetbrains.com)，有想过花钱买个正版的，只能按照一年几千块的买。目前还[买不起](http://idea.lanyus.com/)啊，就这么先用着吧
+* [IDEA](https://www.jetbrains.com)，有想过花钱买个正版的，只能按照一年几千块的买。目前还[买不起](http://idea.lanyus.com/)啊，就这么先用着吧。[快捷键](https://github.com/GoodSix/Hello/blob/master/IDE/IDEA/keymap.md)慢慢记就行。(我好像...[看不懂英文](https://github.com/GoodSix/Hello/releases/tag/IDEA-2018.3))
