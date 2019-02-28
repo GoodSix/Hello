@@ -1,0 +1,66 @@
+{
+	"workbench.startupEditor": "newUntitledFile",
+	"workbench.activityBar.visible": false,
+	"editor.fontFamily": "Menlo, Consolas, 'Courier New', monospace",
+	"editor.fontSize": 15,
+	"editor.lineHeight": 22,
+	"workbench.colorTheme": "Darcula - WebStorm Edition",
+	"editor.tokenColorCustomizations": {
+		"textMateRules": [
+			{
+				"name": "Comments",
+				"scope": "comment, punctuation.definition.comment",
+				"settings": {
+					"fontStyle": ""
+				}
+			},
+			{
+				"name": "js/ts italic",
+				"scope": "entity.other.attribute-name.js,entity.other.attribute-name.ts,entity.other.attribute-name.jsx,entity.other.attribute-name.tsx,variable.parameter,variable.language.super",
+				"settings": {
+					"fontStyle": ""
+				}
+			},
+			{
+				"name": "js ts this",
+				"scope": "var.this,variable.language.this.js,variable.language.this.ts,variable.language.this.jsx,variable.language.this.tsx",
+				"settings": {
+					"fontStyle": ""
+				}
+			}
+		]
+	},
+    "editor.detectIndentation": false,
+	"editor.insertSpaces": false,
+	"editor.tabCompletion": "on",
+	"editor.formatOnType": true,
+	"workbench.statusBar.feedback.visible": false,
+	"window.menuBarVisibility": "toggle",
+	"explorer.autoReveal": false,
+	"workbench.iconTheme": "webstorm-icons",
+	"window.zoomLevel": 0,
+	"breadcrumbs.enabled": true,
+	"files.associations": {
+		"*.kotlin": "kotlin"
+	},
+	"extensions.ignoreRecommendations": true,
+	"files.eol": "\n"
+}
+/** 配合插件
+Chinese (Simplified) Language Pack for Visual Studio Code
+
+Darcula Theme - WebStorm Edition
+
+Kotlin Language
+
+markdownlint
+
+PHP Debug
+
+PHP Extension Pack
+
+PHP Intelephense
+
+Webstorm Icon Theme
+
+*/
