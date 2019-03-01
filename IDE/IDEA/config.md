@@ -1,3 +1,7 @@
+[首页](/)
+[快捷键列表](./keymap.md)
+---
+
 ### 卡顿
     内存不够！(〃＞皿＜)
 根据系统版本修改idea.vmoptions/idea64.vmoptions  
