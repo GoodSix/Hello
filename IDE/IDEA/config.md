@@ -19,3 +19,4 @@
   v   fonts-arphic-uming:i386  
   -- 如果还是不行就在执行一个
   aptitude install fonts-arphic-uming
+[test](./demo.html)
