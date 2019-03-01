@@ -1,3 +1,5 @@
+<link rel="icon" type="image/x-icon" class="js-site-favicon" href="https://github.githubassets.com/favicon.ico">
+
 # (⊙v⊙)嗯，你发现了什么吗？？
     我不生产代码，我只是代码的搬运工。
     嗯呐，都搬过来了
