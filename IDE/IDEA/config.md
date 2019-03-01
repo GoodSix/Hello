@@ -1,5 +1,5 @@
 [首页](../../README.md)
-[快捷键列表](./keymap.md)
+[IDEA快捷键](./keymap.md)
 ---
 
 ### 卡顿
@@ -19,4 +19,3 @@
   v   fonts-arphic-uming:i386  
   -- 如果还是不行就在执行一个
   aptitude install fonts-arphic-uming
-[test](./demo.html)
