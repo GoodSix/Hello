@@ -4,9 +4,34 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
 	<meta http-equiv="X-UA-Compatible" content="ie=edge">
-	<title>C(*≧▽≦*)C</title>
+
+	<title>C(*≧▽≦*)Cheng</title>
+	<link rel="stylesheet" href="./ccheng/css/mdui.min.css">
+	<script src="./ccheng/js/mdui.min.js"></script>
+	<script src="./ccheng/js/vue.min.js"></script>
 </head>
-<body>
-	Hello World !
+
+<body bgcolor="#F5F5F5">
+
+	<iframe src="./ccheng/wait.html" style="width: 100%;" onload="this.height = window.innerHeight - 10;" frameborder="0">你的浏览器版本有点低了哦～</iframe>
+
 </body>
+
+<script>
+	window.onload = function () {
+        mdui.snackbar({
+            message: '正在建设中，请稍后再来吧～～',
+            position: 'top',
+			buttonText: 'Yes',
+            buttonColor: 'rgb(249,217,70)',
+            onButtonClick: () => {
+                this.close();
+			},
+        });
+	};
+
+	window.onresize = function () {
+	    document.getElementsByTagName('iframe')[0].height = window.innerHeight - 10;
+	};
+</script>
 </html>
