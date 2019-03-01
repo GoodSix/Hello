@@ -1,4 +1,4 @@
-[首页](/Hello)
+[首页](/README.md)
 [快捷键列表](./keymap.md)
 ---
 

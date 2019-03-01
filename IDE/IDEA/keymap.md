@@ -1,4 +1,4 @@
-[首页](/Hello)
+[首页](/README.md)
 [配置文件](./config.md)
 ---
 
