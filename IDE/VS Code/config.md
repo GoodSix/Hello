@@ -1,3 +1,7 @@
+[首页](../../README.md)
+[快捷键](./keymap.md)
+---
+
 ```json
 {
 	"workbench.startupEditor": "newUntitledFile",
