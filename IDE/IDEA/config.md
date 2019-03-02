@@ -4,8 +4,10 @@
 
 ### 卡顿
     内存不够！(〃＞皿＜)
+    
 根据系统版本修改**idea.vmoptions/idea64.vmoptions**  
 `-Xms=%s` 设置虚拟机最小内存
+
 
 ### Deepin乱码
     烦恼了好几天，修改了好多配置，才发现是deepin下字体缺失
