@@ -1,3 +1,4 @@
+```json
 {
 	"workbench.startupEditor": "newUntitledFile",
 	"workbench.activityBar.visible": false,
@@ -46,21 +47,20 @@
 	"extensions.ignoreRecommendations": true,
 	"files.eol": "\n"
 }
-/** 配合插件
-Chinese (Simplified) Language Pack for Visual Studio Code
+```
 
-Darcula Theme - WebStorm Edition
+配合插件食用，效果更佳  
+`Chinese (Simplified) Language Pack for Visual Studio Code`  中文语言包  
 
-Kotlin Language
+`Darcula Theme - WebStorm Edition`  idea 的darkula主题  
 
-markdownlint
+`markdownlint`  增强markdown
 
-PHP Debug
+`Webstorm Icon Theme`  图标主题  
+  
+*我的PHP*  
+`PHP Debug`  需要先开启php的debug插件(开启远程调试需要注意下，这个插件默认监听的是9000端口，会和php-fpm冲突，建议9001)
+  
+`PHP Extension Pack` php包扩展  
 
-PHP Extension Pack
-
-PHP Intelephense
-
-Webstorm Icon Theme
-
-*/
+`PHP Intelephense` php插件  

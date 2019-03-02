@@ -9,7 +9,8 @@
 
 ### [VS Code](https://code.visualstudio.com)
 > 用过很长一段时间了，快捷键也很熟悉了，可我总感觉默认的主题不好看
-* [配置](./IDE/VS%20Code/config.json)了好久...
+* [配置](./IDE/VS%20Code/config.md)了好久...
+* [快捷键](./IDE/VS%20Code/keymap.md)都快忘完了
 
 ### [IDEA](https://www.jetbrains.com)
 > 快捷键什么的慢慢记吧。
