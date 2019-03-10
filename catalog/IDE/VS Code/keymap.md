@@ -1,5 +1,5 @@
-[首页](../../README.md)
-[配置](./config.json)
+[首页](../../../README.md)
+[配置](./config.md)
 ---
 
 - `f1`                      帮助

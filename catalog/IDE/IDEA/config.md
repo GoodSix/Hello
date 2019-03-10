@@ -1,4 +1,4 @@
-[首页](../../README.md)
+[首页](../../../README.md)
 [IDEA快捷键](./keymap.md)
 ---
 
@@ -15,4 +15,4 @@
   `sudo apt install fonts-arphic-uming`  
   安装字体
   
-![还行](./image/idea.png)
+![还行](./image/idea.png)json
