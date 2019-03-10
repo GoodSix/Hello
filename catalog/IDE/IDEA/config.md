@@ -17,4 +17,4 @@
   `sudo apt install fonts-arphic-uming`  
   安装字体
   
-![还行](./image/idea.png)json
+![还行](./image/idea.png)
