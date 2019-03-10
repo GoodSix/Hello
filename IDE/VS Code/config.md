@@ -2,7 +2,8 @@
 [快捷键](./keymap.md)
 ---
 
-```json
+用着海星，就是觉得默认的主题有点难看╮(╯▽╰)╭
+```
 {
 	"workbench.startupEditor": "newUntitledFile",
 	"workbench.activityBar.visible": false,
