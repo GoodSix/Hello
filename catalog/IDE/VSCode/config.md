@@ -1,7 +1,7 @@
 [首页](../../../README.md)
 ---
 
-默认的主题感觉不是很好看
+默认的主题感觉不是很好看  
 *还是这样比较舒服*
 1. Chinese (Simplified) Language Pack for Visual Studio Code
 1. Darcula Theme - WebStorm Edition
@@ -26,7 +26,6 @@
 	"workbench.statusBar.feedback.visible": false,
 	"breadcrumbs.enabled": true,
 	"explorer.autoReveal": false,
-	"sync.gist": "b6d042904f6262c065dc4b21329205eb",
 	"window.menuBarVisibility": "toggle",
 	"workbench.startupEditor": "newUntitledFile",
 }

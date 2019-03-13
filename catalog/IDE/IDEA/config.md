@@ -3,7 +3,6 @@
 ---
 
 ### 卡顿
-    内存不够！(〃＞皿＜)
     
 + 根据系统版本修改**idea.vmoptions/idea64.vmoptions**中`-Xms=%s` 设置虚拟机最小内存情况可能会好一点n(*≧▽≦*)n
 
@@ -16,5 +15,3 @@
   查看是否安装过该补丁  
   `sudo apt install fonts-arphic-uming`  
   安装字体
-  
-![还行](./image/idea.png)
