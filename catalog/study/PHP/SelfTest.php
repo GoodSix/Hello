@@ -82,6 +82,3 @@ class SelfTest implements Iterator{
         if ($this ->file) fclose($this ->file);
     }
 }
-
-$st = new SelfTest('./function.md');
-var_dump($st ->test);

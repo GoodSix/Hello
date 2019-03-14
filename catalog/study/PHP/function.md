@@ -124,6 +124,7 @@
 | pi | 获取圆周率值 | double(3.1415926535898) |
 | 文件函数 |  |  |
 | fopen | 打开文件或URL | [fopen的正确打开方式](./more/fopen.md) |
+| fscanf | 根据格式从文件中解析输入 | 标准输入、输出（STDIN, STDOUT, STDERR） |
 | fclose | 关闭一个一打开的文件指针 | 关闭fopen对象 |
 | file_exists | 检测文件或目录是否存在 | 无 |
 | filesize | 获取文件大小 | 注意大小是bytes |
