@@ -1,5 +1,5 @@
 | 数字下标 | 关联键名（自PHP4.0.6） | 说明 |
-| --- | --- | --- |
+|---|---|---|
 | 0 | dev | device number - 设备名 |
 | 1 | ino | inode number - inode 号码 |
 | 2 | mode | inode protection mode - inode 保护模式 |

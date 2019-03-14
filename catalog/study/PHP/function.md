@@ -123,7 +123,7 @@
 | rand | 随机数 | 更推荐使用mt_rand |
 | pi | 获取圆周率值 | double(3.1415926535898) |
 | 文件函数 |  |  |
-| fopen | 打开文件或URL | [fopen的正确打开方式](./fopen.md) |
+| fopen | 打开文件或URL | [fopen的正确打开方式](./more/fopen.md) |
 | fclose | 关闭一个一打开的文件指针 | 关闭fopen对象 |
 | file_exists | 检测文件或目录是否存在 | 无 |
 | filesize | 获取文件大小 | 注意大小是bytes |
@@ -134,7 +134,7 @@
 | filemtime | 获取文件的修改时间 | 返回的是时间戳 |
 | fileatime | 获取文件的上次访问时间 | 返回的是时间戳 |
 | touch | 创建一个文件，可以为其设置修改时间和访问时间 | 如果文件已存在则可以使用此函数修改这个文件的修改时间和访问时间 |
-| stat | 获取文件的详细信息(属性值) | [stat](./stat.md) |
+| stat | 获取文件的详细信息(属性值) | [stat](./more/stat.md) |
 | fwrite | 写入文件 | 参数1为fopen对象，参数2为要写入的内容，参数3为写入的长度 |
 | fputs | fwrite的别名 | 和fwrite一样的用法 |
 | fread | 读取文件 | 参数1为fopen对象，参数2为要读取的长度 |
