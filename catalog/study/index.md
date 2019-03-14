@@ -1,7 +1,7 @@
 [首页](../../README.md)
 ---
 
-## [PHP](./PHP/index.md)
+## [PHP](http://www.php.net/)
     PHP是世界上最好的语言n(*≧▽≦*)n
     
 + [常用函数](./PHP/function.md)  
