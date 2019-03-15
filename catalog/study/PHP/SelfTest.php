@@ -27,6 +27,8 @@ class SelfTest implements Iterator{
         'remnant'       => 0,   // 剩余个数
         's'             => 0,   // 正确率(所有)
     ];                      // 成绩汇总
+    private $err = [];      // 错题统计
+    private $_err;          // 当前错题
 
     /**
      * SelfTest constructor.
@@ -127,18 +129,18 @@ class SelfTest implements Iterator{
         $this ->end = array_keys($this ->test)[count(array_keys($this ->test)) - 1];// 获取最后一个章节位置
         $this ->reduce['remnant'] = array_reduce($this ->test, function ($carry, $item) { // 汇总所有个数
             return $carry + count($item);
-        }, 0);
+        }, -1);
     }
 
     public function valid() {
         // 清屏
         if (!isset($_SERVER))                           fwrite($this ->output);
-        elseif (!array_key_exists('SHELL', $_SERVER))   throw new Exception('无法在非shell环境下运行');
+        elseif (!array_key_exists('SHELL', $_SERVER))   throw new Exception('无法在非shell环境下运行，如需扩展请调用getTest()生成试题');
         else                                            system(strtolower(PHP_OS) == 'linux'?'clear':'cls');
 
         fwrite(STDOUT, "当前分类为:{$this ->iterator[0]}\t正确:{$this ->reduce['success']}个\t错误:{$this ->reduce['error']}个\t跳过:{$this ->reduce['jump']}次\t已答:{$this ->reduce['num']}个\t剩余:{$this ->reduce['remnant']}个\t正确率:{$this ->reduce['s']}%" . PHP_EOL);
-        if ($this ->iterator[0] == $this ->end && $this ->iterator[$this ->end] == count($this ->iterator[$this ->end]) - 1) {
-            fwrite(STDOUT, '--测试完毕--');
+        if ($this ->iterator[0] == $this ->end && $this ->iterator[1] >= count($this ->test[$this ->iterator[0]]) - 1) {
+            return false;
         }else {
             fwrite(STDOUT, wordwrap($this ->input ?? __CLASS__) . PHP_EOL);
             $this ->input = null;
@@ -151,26 +153,32 @@ class SelfTest implements Iterator{
         $success = 0;
         similar_text($this ->input, $current[0], $success);
         if (!$this ->input) { // 跳过
-            $this ->reduce['jump'] ++;
+            if ($this ->_err != $current[0]) $this ->reduce['jump'] ++;
+            $this ->_err = $current[0];
             $this ->input = "跳过:{$current[0]}" . PHP_EOL;
+            // 错题记录
+            $this ->err [] = "{$current[0]}：{$current[2]}(跳过)";
         }elseif ($this ->input == $current[0]) {
             $this ->iterator[1] ++; // 回答正确n(*≧▽≦*)n， 进入下一道试题
             if ($this ->iterator[1] >= count($this ->test[$this ->iterator[0]]) - 1) {
                 next($this ->test);
                 $this ->iterator[0] = key($this ->test);
             }
-            // 正确个数记录
-            $this ->reduce['success'] ++;
+            // 正确个数记录，如果该题被标记为错题则不增加正确个数
+            if ($this ->_err != $current[0]) $this ->reduce['success'] ++;
+            // 已答个数
+            $this ->reduce['num'] ++;
             // 剩余个数记录
             $this ->reduce['remnant'] --;
             $this ->input = "{$current[0]}：{$current[2]}" . PHP_EOL;
         }else {
             // 错误个数记录
-            $this ->reduce['error'] ++;
+            if ($this ->_err != $current[0]) $this ->reduce['error'] ++;
+            $this ->_err = $current[0];
+            // 错题库记录
+            $this ->err [] = "{$current[0]}：{$current[2]}";
             $this ->input = '回答错误，该函数的说明为：' . $current[2] . PHP_EOL . "\t" . '您的答案与正确答案的相似度为' . round($success, 2) . '，请再次回答';
         }
-        // 已答个数
-        $this ->reduce['num'] ++;
         // 正确率，保留两位小数
         $this ->reduce['s'] = round($this ->reduce['success'] / $this ->reduce['num'] * 100, 2);
     }
@@ -181,7 +189,14 @@ class SelfTest implements Iterator{
 
     public function current() {
         // fwrite(STDOUT, '在' . $this ->iterator[0] . '中，' . $this ->test[$this ->iterator[0]][$this ->iterator[1]][1] . '的函数为：' . PHP_EOL);
-        fwrite(STDOUT, $this ->test[$this ->iterator[0]][$this ->iterator[1]][1] . '的函数为：' . PHP_EOL);
+        $current = @$this ->test[$this ->iterator[0]][$this ->iterator[1]][1];
+        if ($current)
+            fwrite(STDOUT,  $current. '的函数为：' . PHP_EOL);
+        else {
+            $this ->err = implode(PHP_EOL, array_unique($this ->err));
+            fwrite(STDOUT, '错题：' . PHP_EOL . $this ->err . PHP_EOL);
+            exit();
+        }
         fscanf(STDIN, '%s', $this ->input); // 接收输入
     }
 }
