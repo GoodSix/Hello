@@ -2,6 +2,8 @@
 [秃头之旅](../index.md)
 ---
 
+# PHP常用函数 #
+
 | 函数 | 作用 | 说明/技巧 |
 |---|---|---|
 | 文本函数 |  |  |
@@ -24,7 +26,7 @@
 | htmlentities | 把字符转为html实体 | 本函数各方面都和 htmlspecialchars() 一样， 除了 htmlentities() 会转换所有具有 HTML 实体的字符 |
 | htmlspecialchars | 预定义字符串html编码 | 某类字符在 HTML 中有特殊用处，如需保持原意，需要用 HTML 实体来表达。 本函数会返回字符转义后的表达。 如需转换子字符串中所有关联的名称实体，使用 htmlentities() 代替本函数 |
 | html_entity_decode | 将html实体转换为html标签 | 将htmlentities转换的实体反转回去 |
-| nl2br | \n转义为<br>标签 | 将文本中的系统换行符转换为<br>标签 |
+| nl2br | \n转义为br标签 | 将文本中的系统换行符转换为br标签 |
 | strip_tags | 剥去HTML、XML、以及PHP的标签 | 没有更多说明 |
 | addcslashes | 在指定的字符前添加反斜线转义符 | 注意不要和addslashes搞混了，带c的是转换指定预定义，不带c的是转换特殊字符 |
 | stripcslashes | 删除由addcslashes添加的转义符 | addcslashes可以在指定的预定义字符前加转义符号，此函数可以将转义符号去掉 |
@@ -161,6 +163,10 @@
 | rmdir | 删除目录 | 删除一个空目录，无法删除非空目录 |
 | unlink | 删除文件 | 删除文件 |
 | copy | 复制文件 | 复制文件 |
+| getcwd | 返回当前工作目录 | 获取当前工作目录的绝对路径 |
+| chdir | 改变当前的目录 | 改变当前的工作目录 |
+| scandir | 返回目录中的文件目录和文件，以数组格式返回 | 读取目录，一个数组，包含这个目录下的所有目录和文件 |
+| realpath | 获取一个相对路径的绝对路径 | 将相对路径转换为绝对路径 |
 | rename | 重命名一个文件或目录 | 这个函数还能用于移动文件。操作原理是先复制这个文件，成功后删除原来的文件 |
 | is_uploaded_file | 判断文件是否是通过HTTP POST上传的 | 文件上传 |
 | move_uploaded_file | 将上传的文件从暂存区移动到新位置 | 文件上传 |

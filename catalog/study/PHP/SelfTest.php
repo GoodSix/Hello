@@ -6,7 +6,7 @@
  */
 
 /**
- * Class SelfTest
+ * Class SelfTest：跳舞的指针
  * 自测系统，已实现迭代器，命令行下直接遍历该对象即可
  */
 class SelfTest implements Iterator{
