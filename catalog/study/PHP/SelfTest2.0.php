@@ -32,7 +32,7 @@ class SelfTest{
                         if (count($matches) > 0) {
                             $list[] = [
                                 'catalog'   => end($matches),
-                                'path'      => $path,
+                                'path'      => realpath($path),
                             ];
                         }
                     }
@@ -107,5 +107,6 @@ class SelfTest{
 
     }
 }
-$st = new SelfTest('./function.m1');
-var_dump($st);
+//$st = new SelfTest('./function.m1');
+//var_dump($st);
+var_dump(SelfTest::getList('../../../'));
