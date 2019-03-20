@@ -2,10 +2,12 @@
 
 class SelfTest{
 
-    protected $test;
+    protected $test; // 当前对象中的测试题
+    protected $strict; // 匹配答案的精准度,最低50%,当小于95%的时候忽略大小写
 
     public function __construct(...$param) {
         $this ->test = self::getParseTest(...$param);
+        var_dump($this ->asciiCheckString('woshishabi', 'skwucducak'));
     }
 
     /**
@@ -17,7 +19,7 @@ class SelfTest{
      * @return array ['catalog' =>测试题分类, 'path' =>文件路径]
      * @throws Exception 无权限/非目录/不存在
      */
-    public static function getList(string $directory, bool $read = true, string $extension = 'md', array &$list = []){
+    public static function getList(string $directory, bool $read = true, string $extension = 'md', array &$list = []):array {
         if (file_exists($directory) && is_readable($directory)) {
             $directory = rtrim($directory, DIRECTORY_SEPARATOR);
             $opendir = opendir($directory);
@@ -52,7 +54,7 @@ class SelfTest{
      * @return array 解析后的试题
      * @throws Exception 解析错误
      */
-    public static function getParseTest(string $file_name, int $rand = 1) {
+    public static function getParseTest(string $file_name, int $rand = 1):array {
         $file = @fopen($file_name, 'r');
         if (!$file) throw new Exception('找不到试题文件');
         $test = [];
@@ -94,19 +96,33 @@ class SelfTest{
         return $test;
     }
 
-    public function valid() {
+    /**
+     * 使用ascii码偏移量比较两个字符串的差，以百分比方式返回
+     * @param string $string1 第一个字符串
+     * @param string $string2 第二个字符串
+     * @param bool $caps 是否区分大小写
+     * @return float 差
+     */
+    protected function asciiCheckString(string $string1, string $string2, bool $caps = false):float {
+        $len1 = strlen($string1);
+        $len2 = strlen($string2);
+        $maxlen = max($len1, $len2);
 
     }
-    public function prev() {
+
+    public function valid():bool {
 
     }
-    public function current() {
+    public function prev():array {
 
     }
-    public function next() {
+    public function current():array {
+
+    }
+    public function next():bool {
 
     }
 }
-//$st = new SelfTest('./function.m1');
+$st = new SelfTest('./function.md');
 //var_dump($st);
-var_dump(SelfTest::getList('../../../'));
+//var_dump(SelfTest::getList('../../../'));
