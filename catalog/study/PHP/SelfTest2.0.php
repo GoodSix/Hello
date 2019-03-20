@@ -1,13 +1,21 @@
 <?php
 
-class SelfTest{
+class SelfTest2{
 
-    protected $test; // 当前对象中的测试题
-    protected $strict; // 匹配答案的精准度,最低50%,当小于95%的时候忽略大小写
+    public $test;       // 当前对象中的测试题
+    public $strict;     // 匹配答案的精准度,最低50%,当小于95%的时候忽略大小写
+    private $index;     // 当前位置
+    private $success;   // 正确试题
+    private $errors;    // 错误试题
 
+    /**
+     * SelfTest2 constructor.
+     * @param mixed ...$param
+     * @throws Exception 构建错误
+     */
     public function __construct(...$param) {
         $this ->test = self::getParseTest(...$param);
-        var_dump($this ->asciiCheckString('woshishabi', 'skwucducak'));
+        $this ->reset();
     }
 
     /**
@@ -75,6 +83,7 @@ class SelfTest{
             }
         }
         if (!count($test)) throw new Exception('在指定的试题文件中没有解析到试题内容');
+        reset($test);
         if ($rand) {
             // 打乱子顺序
             foreach($test as $key =>$value) {
@@ -97,32 +106,141 @@ class SelfTest{
     }
 
     /**
-     * 使用ascii码偏移量比较两个字符串的差，以百分比方式返回
+     * 获取当前的正确回答信息
+     * @return array
+     */
+    public function getSuccess():array {
+        return $this ->success;
+    }
+
+    /**
+     * 获取当前的错题信息
+     * @return array
+     */
+    public function getErrors():array {
+        return $this ->errors;
+    }
+
+    /**
+     * 获取当前进度
+     * @return array
+     */
+    public function getPosition():array {
+        return [
+            'catalog'   => $this ->index['catalog'],
+            'catalog_index' => array_search($this ->index['catalog'], $this ->index['chapter']),
+            'index'     => $this ->index['index'],
+        ];
+    }
+
+    /**
+     * 比较两个字符串的相似度
      * @param string $string1 第一个字符串
      * @param string $string2 第二个字符串
-     * @param bool $caps 是否区分大小写
-     * @return float 差
+     * @param bool $caps 是否忽略大小写
+     * @return float 相似度
      */
-    protected function asciiCheckString(string $string1, string $string2, bool $caps = false):float {
+    protected function checkString(string $string1, string $string2, bool $caps = true):float {
         $len1 = strlen($string1);
         $len2 = strlen($string2);
-        $maxlen = max($len1, $len2);
+        $minlen = min($len1, $len2);
+        $index = $diff = 0;
+        do {
+            if ($caps){
+                $string1[$index] = strtolower($string1[$index]);
+                $string2[$index] = strtolower($string2[$index]);
+            }
+            if ($string1[$index] == $string2[$index]) continue;
+            else $diff ++;
+        }while($index ++ < $minlen - 1 && isset($string2[$index]));
+        return (max($len1, $len2) - min($len1, $len2) + $diff) / max($len1, $len2) * 100;
+    }
+
+    /**
+     * 重置当前进度
+     * @return bool
+     */
+    public function reset():void {
+        $this ->index = [
+            'chapter'   => array_keys($this ->test),
+            'catalog'   => key($this ->test),
+            'index'     => 0,
+        ];
+        // $this ->index['catalog'] = $this ->index['chapter'][0];
+        // 每个分类下面的试题个数, 下标和chapter一样
+        foreach ($this ->index['chapter'] as $value) {
+            $this ->index['chapter_num'][] = count($this ->test[$value]);
+        }
+        return;
+    }
+
+    /**
+     * 返回指定字符串和当前试题是否匹配
+     * @param string $input
+     * @return bool
+     */
+    public function valid(string $input):bool {
 
     }
 
-    public function valid():bool {
-
+    /**
+     * 返回上一题信息,如果没有则为空
+     * @return array
+     */
+    public function prev():?array {
+        $position = $this ->getPosition();
+        if ($this ->index['index'] < 1) {
+            return @$this ->index[$this ->index['chapter'][$position['chapter_num']] - 1][$this ->index['chapter_num'][$position['catalog_index'] - 1] - 1];
+        }else {
+            return @$this ->index[$position['catalog']][$position['index'] - 1];
+        }
     }
-    public function prev():array {
 
-    }
+    /**
+     * 返回当前试题信息
+     * @return array
+     */
     public function current():array {
-
+        return $this ->test[$this ->index['catalog']][$this ->index['index']];
     }
-    public function next():bool {
 
+    /**
+     * 返回下一题信息,如果没有则为空
+     * @return array
+     */
+    public function next():?array {
+        $position = $this ->getPosition();
+        if ($this ->index['index'] < $this ->index['chapter_num'][$position['index']] - 1){
+            return @$this ->test[$this ->index['catalog']][$this ->index['index'] + 1];
+        }elseif(isset($this ->test[$this ->index['chapter'][$position['catalog_index'] + 1]])) {
+            return @$this ->test[$this ->index['chapter'][$position['catalog_index'] + 1]][0];
+        }
+    }
+
+    /**
+     * 跳到下一题,返回剩余试题个数
+     * @param int $sep 跳跃次数
+     * @return int 剩余试题个数
+     */
+    public function jump(int $sep = 1):int {
+        // 位置向后移动
+        $position = $this ->getPosition();
+        $this ->index['index'] += $sep;
+        if ($this ->index['index'] >= $this ->index['chapter_num'][$position['catalog_index']] - 1) {
+            $this ->index['catalog'] = $this ->index['chapter'][$position['catalog_index'] + 1];
+            $this ->index['index'] -= $this ->index['chapter_num'][$position['catalog_index'] + 1];
+        }
+        // TODO::计算剩余试题个数
+        return 1;
     }
 }
-$st = new SelfTest('./function.md');
-//var_dump($st);
-//var_dump(SelfTest::getList('../../../'));
+
+try {
+    $st2 = new SelfTest2('./function.md', 2);
+    var_dump($st2 ->current());
+    var_dump($st2 ->jump());
+    var_dump($st2 ->getPosition());
+    var_dump($st2 ->current());
+} catch (Exception $e) {
+    var_dump("捕获了异常：{$e ->getMessage()}");
+}
