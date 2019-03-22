@@ -6,7 +6,7 @@
  * Time: 下午3:56
  */
 
-namespace app;
+namespace C;
 
 
 class App {
