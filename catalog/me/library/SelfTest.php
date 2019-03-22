@@ -9,6 +9,9 @@
  * Class SelfTest：跳舞的指针
  * 自测系统，已实现迭代器，命令行下直接遍历该对象即可
  */
+
+namespace lib;
+
 class SelfTest implements Iterator{
 
     private static $_self;  // 如果需要扩展，$_self为实体

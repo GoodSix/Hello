@@ -7,6 +7,9 @@
  * Date:    2019-03-22
  * Time:    11:23:41
  */
+
+namespace lib;
+
 class SelfTest2{
 
     protected $test;       // 当前对象中的测试题
