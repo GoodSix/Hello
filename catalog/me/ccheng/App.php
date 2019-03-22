@@ -11,6 +11,19 @@ namespace C;
 
 class App {
     public function __construct(){
-        var_dump(__DIR__);
+
     }
+
+    public function start() {
+
+    }
+
+    public function back() {
+
+    }
+
+    public function response() {
+
+    }
+
 }

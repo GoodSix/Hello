@@ -8,23 +8,33 @@
  * Time:    11:23:41
  */
 
-namespace lib;
+namespace Lib\SelfTest;
+
+use lib\SelfTest;
 
 class SelfTest2{
 
     protected $test;       // 当前对象中的测试题
     public $strict = 10;// 容错度
     private $index;     // 当前位置
+    // chapter          : 章节目录
+    // catalog          : 当前章节
+    // index            : 当前章节中的位置
+    // catalog_index    : 每个章节中所有的试题数量，索引随章节目录
+    // test_directory   : 被解析的试题位置
     private $success;   // 正确试题
     private $errors;    // 错误试题
 
+    private static $ctest; // 修改试题对象
+
     /**
      * SelfTest2 constructor.
-     * @param array $test 试题模型
+     * @param array $param
      */
-    public function __construct(array $test) {
-        $this ->test = $test;
+    public function __construct(...$param) {
+        $this ->test = $this ->getParseTest(...$param);
         $this ->reset();
+        $this ->index['test_directory'] = $param[0];
     }
 
     /**
@@ -71,7 +81,7 @@ class SelfTest2{
      * @return array 解析后的试题
      * @throws Exception 解析错误
      */
-    public static function getParseTest(string $file_name, int $rand = 1):array {
+    public function getParseTest(string $file_name, int $rand = 1):array {
         $file = @fopen($file_name, 'r');
         if (!$file) throw new Exception('找不到试题文件');
         $test = [];
@@ -288,5 +298,10 @@ class SelfTest2{
             }
         }
         return $rest;
+    }
+
+    public function getCtest() {
+        if (!self::$ctest) self::$ctest = \Lib\SelfTest\CTest::getInstance($this ->index['test_directory']);
+        return self::$ctest;
     }
 }
