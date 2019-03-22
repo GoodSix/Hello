@@ -1,20 +1,26 @@
 <?php
 
+/**
+ * Created by IntelliJ IDEA
+ * User:    ccheng
+ * Email:   1434389213@qq.com
+ * Date:    2019-03-22
+ * Time:    11:23:41
+ */
 class SelfTest2{
 
-    public $test;       // 当前对象中的测试题
-    public $strict;     // 匹配答案的精准度,最低50%,当小于95%的时候忽略大小写
+    protected $test;       // 当前对象中的测试题
+    public $strict = 10;// 容错度
     private $index;     // 当前位置
     private $success;   // 正确试题
     private $errors;    // 错误试题
 
     /**
      * SelfTest2 constructor.
-     * @param mixed ...$param
-     * @throws Exception 构建错误
+     * @param array $test 试题模型
      */
-    public function __construct(...$param) {
-        $this ->test = self::getParseTest(...$param);
+    public function __construct(array $test) {
+        $this ->test = $test;
         $this ->reset();
     }
 
@@ -109,7 +115,7 @@ class SelfTest2{
      * 获取当前的正确回答信息
      * @return array
      */
-    public function getSuccess():array {
+    public function getSuccess():?array {
         return $this ->success;
     }
 
@@ -117,8 +123,21 @@ class SelfTest2{
      * 获取当前的错题信息
      * @return array
      */
-    public function getErrors():array {
+    public function getErrors():?array {
         return $this ->errors;
+    }
+
+    /**
+     * 获取剩余试题个数
+     * @return int
+     */
+    public function getRest():int {
+        $position = $this ->getPosition();
+        $num = $this ->index['chapter_num'][$position['catalog_index']] - $position['index'] - 1;
+        for($i = $position['catalog_index'] + 1; $i < count($this ->index['chapter_num']); $i ++) {
+            $num += $this ->index['chapter_num'][$i];
+        }
+        return $num;
     }
 
     /**
@@ -134,11 +153,32 @@ class SelfTest2{
     }
 
     /**
-     * 比较两个字符串的相似度
+     * 返回当前试题索引
+     * @return array|null
+     */
+    public function getIndex():?array {
+        return $this ->index;
+    }
+
+    /**
+     * 设置当前进度
+     * @param string $catalog 章节名
+     * @param int $index 索引位置
+     * @return bool 设置是否成功
+     */
+    public function setPosition(string $catalog, int $index = 0):bool {
+        return in_array($catalog, $this ->index['chapter'])
+            && ($this ->index['catalog'] = $catalog)
+            && $index > -1
+            && ($this ->index['index'] = $index) > -1;
+    }
+
+    /**
+     * 比较两个字符串的相差度
      * @param string $string1 第一个字符串
      * @param string $string2 第二个字符串
      * @param bool $caps 是否忽略大小写
-     * @return float 相似度
+     * @return float 相差度
      */
     protected function checkString(string $string1, string $string2, bool $caps = true):float {
         $len1 = strlen($string1);
@@ -158,7 +198,7 @@ class SelfTest2{
 
     /**
      * 重置当前进度
-     * @return bool
+     * @return void
      */
     public function reset():void {
         $this ->index = [
@@ -175,12 +215,24 @@ class SelfTest2{
     }
 
     /**
+     * TODO:: 不需要大小写要在valid的实参中声明
      * 返回指定字符串和当前试题是否匹配
-     * @param string $input
-     * @return bool
+     * @param string $input 被对比的字符串
+     * @param bool $caps 是否忽略大小写
+     * @param string $cmp 对比字段，可选function，effect，skill
+     * @return float 相似度
      */
-    public function valid(string $input):bool {
-
+    public function valid(string $input, bool $caps = true, string $cmp = 'function'):float {
+        $cmp = round($this ->checkString($input, $this ->current()[$cmp], $caps), 2);
+        // 题库记录
+        if ($cmp < round($this ->strict, 2)){
+            $this ->success[] = $this ->current();
+            $this ->success = array_unique($this ->success);
+        }else {
+            $this ->errors[] = $this ->current();
+            $this ->errors = array_unique($this ->errors);
+        }
+        return 100 - $cmp;
     }
 
     /**
@@ -223,24 +275,15 @@ class SelfTest2{
      * @return int 剩余试题个数
      */
     public function jump(int $sep = 1):int {
-        // 位置向后移动
-        $position = $this ->getPosition();
-        $this ->index['index'] += $sep;
-        if ($this ->index['index'] >= $this ->index['chapter_num'][$position['catalog_index']] - 1) {
-            $this ->index['catalog'] = $this ->index['chapter'][$position['catalog_index'] + 1];
-            $this ->index['index'] -= $this ->index['chapter_num'][$position['catalog_index'] + 1];
+        if($rest = $this ->getRest()){
+            // 位置向后移动
+            $position = $this ->getPosition();
+            $this ->index['index'] += $sep;
+            if ($this ->index['index'] >= $this ->index['chapter_num'][$position['catalog_index']] - 1) {
+                $this ->index['catalog'] = $this ->index['chapter'][$position['catalog_index'] + 1];
+                $this ->index['index'] -= $this ->index['chapter_num'][$position['catalog_index'] + 1];
+            }
         }
-        // TODO::计算剩余试题个数
-        return 1;
+        return $rest;
     }
-}
-
-try {
-    $st2 = new SelfTest2('./function.md', 2);
-    var_dump($st2 ->current());
-    var_dump($st2 ->jump());
-    var_dump($st2 ->getPosition());
-    var_dump($st2 ->current());
-} catch (Exception $e) {
-    var_dump("捕获了异常：{$e ->getMessage()}");
 }
