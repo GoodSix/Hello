@@ -54,4 +54,12 @@ $test_list = \Lib\SelfTest\SelfTest2::getList(GIT_PATH);
 $st2 = new \Lib\SelfTest\SelfTest2($test_list[2]['path'], 0);
 $ctest = $st2 ->getCtest();
 
-var_dump($ctest ->add('数组函数'));
+var_dump($ctest ->add(
+	[
+		'文本函数' => [
+			'test_',
+			'buzhidao',
+			'批量增加测试'
+		]
+	]
+));

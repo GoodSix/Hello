@@ -49,32 +49,34 @@ class CTest{
 	 * @return bool 返回添加是否成功
 	 */
     public function add($catalog, string $test = null,string $effect = null, string $skill = null):bool {
+		$is_added = false;
 		if (is_array($catalog)) {
-			if (is_string(key($catalog)) && is_array(current($catalog))) { // 同时添加多个
-				foreach ($catalog as $key =>$value) {
-					$this ->add($key, ...$value);
-				}
-			}else {
-				$this ->add(...$catalog);
+			foreach ($catalog as $key =>$value) {
+				$this ->add($key, ...$value);
 			}
 		}else {
 			if (!$test || !$effect || !$skill) throw new \Exception('add content is null');
 
 			foreach ($this ->file as $key =>$value) {
 				$ex = explode('|', $value);
-				if (count($ex) >= 4 && trim($ex[1]) == $catalog) { 
+				if (count($ex) >= 4 && trim($ex[1]) == trim($catalog)) { 
+					/**
+					 TODO:: 此处没有添加,替换了原来的内容,需要后移所有内容!!!!
+					 */
 					$this ->file[$key + 1] = '| ' . trim($test) . ' | ' . trim($effect) . ' | ' . trim($skill) . ' |' . PHP_EOL;
-					return true;
+					$is_added = true;
+					// array
+					break;
 				}
 			}
 			// 当前分类是新分类,需要添加分类
 			if (is_string($catalog)) {
 				$this ->file[] = '| ' . trim($catalog) . ' |  |  |' . PHP_EOL;
 				$this ->file[] = '| ' . trim($test) . ' | ' . trim($effect) . ' | ' . trim($skill) . ' |' . PHP_EOL;
-				return true;
+				$is_added = true;
 			}
 		}
-		return false;
+		return $is_added;
     }
 
     /**
@@ -118,7 +120,6 @@ class CTest{
 		}else {
 			return $_edit($name, $replace_effetc, $replace_skill);
 		}
-		return false;
     }
 
     public function __destruct() {
