@@ -53,4 +53,5 @@ $app ->start();
 $test_list = \Lib\SelfTest\SelfTest2::getList(GIT_PATH);
 $st2 = new \Lib\SelfTest\SelfTest2($test_list[2]['path'], 0);
 $ctest = $st2 ->getCtest();
-$ctest ->delete('number_format');
+
+var_dump($ctest ->add('数组函数'));
