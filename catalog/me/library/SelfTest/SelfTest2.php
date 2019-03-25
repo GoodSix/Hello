@@ -300,8 +300,11 @@ class SelfTest2{
         return $rest;
     }
 
-    public function getCtest() {
-        if (!self::$ctest) self::$ctest = \Lib\SelfTest\CTest::getInstance($this ->index['test_directory']);
+	/**
+	 * 获取ETest实例，对当前试题文件进行修改
+	 */
+    public function getETest() {
+        if (!self::$ctest) self::$ctest = \Lib\SelfTest\ETest::getInstance($this ->index['test_directory']);
         return self::$ctest;
     }
 }

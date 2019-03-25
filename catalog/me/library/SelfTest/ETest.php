@@ -7,7 +7,7 @@
  */
 namespace Lib\SelfTest;
 
-class CTest{
+class ETest{
     private static $_self;
 
     private $directory;     // 源文件路径
@@ -56,25 +56,30 @@ class CTest{
 			}
 		}else {
 			if (!$test || !$effect || !$skill) throw new \Exception('add content is null');
-
+			$add_catalog = '';
+			$append = '';
+			$handle = fopen($this ->directory, 'r+');
+			$fseek = 0;
 			foreach ($this ->file as $key =>$value) {
 				$ex = explode('|', $value);
-				if (count($ex) >= 4 && trim($ex[1]) == trim($catalog)) { 
-					/**
-					 TODO:: 此处没有添加,替换了原来的内容,需要后移所有内容!!!!
-					 */
-					$this ->file[$key + 1] = '| ' . trim($test) . ' | ' . trim($effect) . ' | ' . trim($skill) . ' |' . PHP_EOL;
-					$is_added = true;
-					// array
+
+				$fseek += strlen($value); // 把文件指针移动到当前分类后面
+				if (count($ex) >= 4 && trim($ex[1]) == trim($catalog)) {
+					fseek($handle, $fseek);
+					while(!feof($handle)) {
+						$append .= fgets($handle);
+					}
 					break;
+				}elseif($key >= count($this ->file) - 1) { // 如果没有这个分类则在文件末尾添加
+					$add_catalog = '| ' . trim($catalog) . ' |  |  |' . PHP_EOL;
+					fseek($handle, $fseek);
+					fwrite($handle, $add_catalog);
 				}
 			}
-			// 当前分类是新分类,需要添加分类
-			if (is_string($catalog)) {
-				$this ->file[] = '| ' . trim($catalog) . ' |  |  |' . PHP_EOL;
-				$this ->file[] = '| ' . trim($test) . ' | ' . trim($effect) . ' | ' . trim($skill) . ' |' . PHP_EOL;
-				$is_added = true;
-			}
+			fseek($handle, $fseek + strlen($add_catalog));
+			$add = '| ' . trim($test) . ' | ' . trim($effect) . ' | ' . trim($skill) . ' |' . PHP_EOL;
+			$is_added = fwrite($handle, $add . $append) && true;
+			fclose($handle);
 		}
 		return $is_added;
     }
