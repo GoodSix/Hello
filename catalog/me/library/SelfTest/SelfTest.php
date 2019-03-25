@@ -137,7 +137,7 @@ class SelfTest implements Iterator{
 
     public function valid() {
         // 清屏
-        if (!isset($_SERVER))                           fwrite($this ->output);
+        if (!isset($_SERVER))                           fscanf(STDOUT, $this ->output);
         elseif (!array_key_exists('SHELL', $_SERVER))   throw new Exception('无法在非shell环境下运行，如需扩展请调用getTest()生成试题');
         else                                            system(strtolower(PHP_OS) == 'linux'?'clear':'cls');
 
