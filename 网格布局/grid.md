@@ -48,6 +48,10 @@ PC IE11以上
 # 属性
 | 属性 | 作用 | 说明 |
 | --- | --- | --- |
+| 网格单元 |  |  |
 | grid-template-columns | 定义网格行 | 一个值表示一个网格项 |
 | grid-template-rows | 定义网格列 | 一个值表示一个网格项 |
+| 网格区域 |  |  |
+| grid-template-areas | 网格区域 |  |
+| grid-area | 定义网格区域名称 |  |
 | 
