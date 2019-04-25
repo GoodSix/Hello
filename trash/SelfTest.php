@@ -9,7 +9,7 @@
  * Class SelfTest：跳舞的指针
  * 自测系统，已实现迭代器，命令行下直接遍历该对象即可
  */
-
+error_reporting(0);
 class SelfTest implements Iterator{
 
     private static $_self;  // 如果需要扩展，$_self为实体
@@ -201,4 +201,4 @@ class SelfTest implements Iterator{
         fscanf(STDIN, '%s', $this ->input); // 接收输入
     }
 }
-new SelfTest('./function.md');
+new SelfTest('./PHP/function.md');

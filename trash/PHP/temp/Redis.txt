@@ -1,0 +1,105 @@
+			String字符串
+设置一个键值对 					set		键	值
+
+设置一个制定有效期的键值对 		setex	键	有效期	值
+
+设置一个不会覆盖的键值对			setnx	键	值
+
+批量设置键值对 					mset	键	值	键	值	...
+
+批量设置不会覆盖的键值对 			msetnx	键	值	键	值	...
+
+获取指定的值 						get		键
+
+批量获取值						mget	键	键	键	...
+	(字符串操作)
+设置范围内的值					setrange	键	起始位置	 替换内容
+
+获取范围内的值					getrange	键	起始位置	 结束位置
+
+获取指定的值同时设置值			getset		键 新值
+
+指定的值自加						incr		键
+	自加指定值						incrby	键	数量	
+自减								decr		键
+	自减指定值						decrby	键	数量
+
+追加字符串						append		键	追加的字符串
+
+获取字符串长度					strlen		键
+
+
+			Hash表(散列表)
+添加一个值						hset	hash库:hash表 	键	值
+
+批量添加值						hmset	hash库:hash表 	键	值	键	值	...
+
+添加不会覆盖的值					hsetnx	hash库:hash表 	键	值
+
+获取指定的数据					hget	hash库:hash表 	键
+
+批量获取数据						hmget	hash库:hash表 	键 	键	键	...
+
+查看指定的键是否存在				hexists	hash库:hash表 	键
+
+获取hash表中的数据数量			hlen	hash库:hash表
+
+删除hash表中的制定数据			hdel	hash库:hash表 	键
+
+删除hash库						del		hash库	或	hash库:hash表
+
+获取hash表中所有的键				hkeys	hash库:hash表
+
+获取hash表中所有的值				hvals	hash库:hash表
+
+获取hash表中所有的数据			hgetall	hash库:hash表
+
+
+
+			List(链表)
+向链表左侧压入数据				lpush	链表		值
+
+向链表右侧压入数据				rpush	链表		值
+
+向链表左|右压入多条数据			linsert 链表		before|after	值
+
+获取链表数据						lrange	链表		起始位置		结束位置
+
+修改指定位置的值					lset 	链表		下标			新值
+
+删除指定下标之前所有的指定值		lrem	链表		下标		值
+
+删除指定范围的值					ltrim	链表		起始位置		结束位置
+
+删除链表的第一条数据				lpop	链表
+
+删除链表的最后一条数据			rpop	链表
+
+获取指定位置的值					linde	链表 	下标
+
+获取链表的数据数量				llen	链表
+
+将第一张表的第一条数据移动到第二张表的最后	rpoplpush	链表1	链表2
+
+
+			Set和Zset(集合和无序集合)
+添加一个值到无序集合(如果存在返回0)	sadd	集合 	值
+
+获取集合中的所有数据					smembers	集合
+
+删除集合中的指定数据					srem		集合 	值
+
+删除集合最后一条数据					spop		集合
+
+获取两个集合的差集					sdiff		集合1	集合2
+
+
+
+			全局命令
+返回所的键							keys		*(表示所有)
+
+检测指定的键是否存在					exists		键
+
+为指定的数据设置有效期				expire		键		有效期
+
+获取指定数据的有效期					ttl			键

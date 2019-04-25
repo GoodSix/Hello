@@ -7,16 +7,17 @@
  * Date:    2019-03-22
  * Time:    11:23:41
  */
+var_dump(SelfTest2::getList('./'));
 class SelfTest2{
 
     protected $test;       // 当前对象中的测试题
     public $strict = 10;// 容错度
     private $index;     // 当前位置
-    // chapter          : 章节目录
-    // catalog          : 当前章节
-    // index            : 当前章节中的位置
-    // catalog_index    : 每个章节中所有的试题数量，索引随章节目录
-    // test_directory   : 被解析的试题位置
+        // chapter          : 章节目录
+        // catalog          : 当前章节
+        // index            : 当前章节中的位置
+        // catalog_index    : 每个章节中所有的试题数量，索引随章节目录
+        // test_directory   : 被解析的试题位置
     private $success;   // 正确试题
     private $errors;    // 错误试题
 
@@ -64,7 +65,7 @@ class SelfTest2{
             }
             closedir($opendir);
         }else {
-            throw new Exception('无法读取目录：' . $directory);
+            throw new \Exception('无法读取目录：' . $directory);
         }
         return $list;
     }
@@ -346,8 +347,9 @@ class ETest{
      * @param array|string $catalog 添加函数的所处目录,如果为空则新建, 如果为数组必须遵守参数键名,可以多个同时添加多个
      * @param string $test 添加的函数的名称
      * @param string $effect 添加的函数的作用说明
-     * @param string $skill  添加函数的更多说明
+     * @param string $skill 添加函数的更多说明
      * @return bool 返回添加是否成功
+     * @throws Exception
      */
     public function add($catalog, string $test = null,string $effect = null, string $skill = null):bool {
         $is_added = false;
@@ -411,7 +413,8 @@ class ETest{
 
         $_edit = function($n, $effetc, $skill) use ($index) {
             foreach (func_get_args() as $key =>$param){
-                if (!(func_get_args()[$key] = trim($param))) throw new \Exception("修改内容不能为空");
+                $param = func_get_args();
+                if (!($param[$key] = trim($param))) throw new \Exception("修改内容不能为空");
             }
             $this ->file[$index] = '| ' . implode(' | ', func_get_args()) . ' |' . PHP_EOL;
             return true;
@@ -430,6 +433,6 @@ class ETest{
 
     public function __destruct() {
         // 将整理过的内容写入到源文件
-        file_put_contents($this ->directory . '.bak', implode('', $this ->file));
+        file_put_contents($this ->directory, implode('', $this ->file));
     }
 }
