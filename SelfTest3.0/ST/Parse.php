@@ -3,20 +3,13 @@
 
 class Parse {
 
-    private static $_self;
+    public $st = 'ccheng';
 
-    private function __construct(string $st) {
-        $this->st = trim($st);
-    }
-
-    /**
-     * 单例模式生成st对象
-     * @param string $st
-     * @return Parse
-     */
-    public static function getInstance(string $st): Parse {
-        if (!self::$_self) self::$_self = new self($st);
-        return self::$_self;
+    public function __construct(string $st) {
+        if (is_file($st) && is_readable($st)) $st = file_get_contents($st);
+        elseif (is_dir($st) && is_readable($st)) $st = file_get_contents(LoadFile::getList($st)[0]);
+        elseif (strpos($st, PHP_EOL) === false) throw new E('别他妈扯了，你他妈的就是想调戏我了');
+        $this ->st = $st;
     }
 
     /**
@@ -60,20 +53,5 @@ class Parse {
 
     public function getSt() {
         return 666;
-    }
-
-    /**
-     * @param $file_name
-     * @return mixed
-     * @throws E
-     */
-    public static function st($file_name) {
-        if (is_file($file_name) && is_readable($file_name)) {
-            $parse = self::getInstance(file_get_contents($file_name));
-            $arr['title'] = $parse->getTitle();
-            $arr['catalog'] = $parse->getCatalog();
-            $arr['st'] = $parse->getSt();
-            return $arr;
-        } else throw new E('Unable to read the specified file：' . $file_name);
     }
 }

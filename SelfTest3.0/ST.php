@@ -2,4 +2,4 @@
 include __DIR__ . '/base.php';
 
 
-var_dump(Parse::st(LoadFile::getList()[0]));
+var_dump((new Parse('.')) ->getTitle());
