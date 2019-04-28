@@ -40,9 +40,18 @@ class Parse {
         preg_match_all('/^\~+\s\w*/miu', $this->st, $catalog);
         $catalogs = [];
         foreach (end($catalog) as $value) {
-            $catalogs[]['pid'] = 0;
-            $catalogs[count($catalogs) - 1]['name'] = substr($value, stripos($value, ' ') + 1);
-            $catalogs[count($catalogs) - 1]['level'] = substr_count($value, '~');
+            $catalogs[]['name'] = substr($value, stripos($value, ' ') + 1);
+            $last_key = count($catalogs) - 1;
+            $catalogs[$last_key]['level'] = substr_count($value, '~');
+            $catalogs[$last_key]['pid'] = $catalogs[$last_key]['level'] == 1 ?false: (function () use($value){
+                $pid = 1;
+                if (stripos($value, ' @ ') !== false) {
+
+                }else {
+
+                }
+                return $pid;
+            })();
         }
         return $catalogs;
     }
