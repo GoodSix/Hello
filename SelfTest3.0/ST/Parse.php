@@ -27,7 +27,7 @@ class Parse {
         $title = [];
         $arr = explode(PHP_EOL, $this->st);
         for ($i = 0; $i < 10; $i++) {
-            if (preg_match('/^\#\s(.*?)\s\#$/', trim($arr[$i]), $title))
+            if (preg_match('/^\~\s(.*?)\s\~$/', trim($arr[$i]), $title))
                 return end($title);
         }
     }
@@ -37,20 +37,22 @@ class Parse {
      */
     public function getCatalog() {
         $catalog = [];
-        preg_match_all('/^\~+\s\w*/miu', $this->st, $catalog);
+        preg_match_all('/^\#+\s\w*/miu', $this->st, $catalog);
         $catalogs = [];
         foreach (end($catalog) as $value) {
             $catalogs[]['name'] = substr($value, stripos($value, ' ') + 1);
             $last_key = count($catalogs) - 1;
-            $catalogs[$last_key]['level'] = substr_count($value, '~');
-            $catalogs[$last_key]['pid'] = $catalogs[$last_key]['level'] == 1 ?false: (function () use($value){
-                $pid = 1;
-                if (stripos($value, ' @ ') !== false) {
-
-                }else {
-
+            $catalogs[$last_key]['level'] = substr_count($value, '#');
+            $catalogs[$last_key]['pid'] = $catalogs[$last_key]['level'] == 1 ?true: (function () use($catalogs, $catalog, $last_key){
+                $temp_catalog = $catalogs;
+                arsort($temp_catalog);
+                $current_level = $catalogs[$last_key]['level'];
+                $v = null;
+                foreach ($temp_catalog as $k =>$v) {
+                    if ($v['level'] == $current_level - 1) return $k;
                 }
-                return $pid;
+                $cl = $current_level - 1;
+                throw new E("Parse error: {$v['name']} is a {$current_level} level category, but the parent category is not a {$cl} level category");
             })();
         }
         return $catalogs;
