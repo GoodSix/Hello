@@ -47,7 +47,7 @@ class Parse {
                 $temp_catalog = $catalogs;
                 arsort($temp_catalog);
                 $current_level = $catalogs[$last_key]['level'];
-                $v = null;
+                $v = 'not found name';
                 foreach ($temp_catalog as $k =>$v) {
                     if ($v['level'] == $current_level - 1) return $k;
                 }
