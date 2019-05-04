@@ -20,7 +20,7 @@ set_exception_handler(function ($err) {
  */
 spl_autoload_register(function ($class_name) {
     $class_name = str_replace('\\', DS, $class_name);
-    if (!@include($include = ST_PATH . DS . $class_name . '.' . SCRIPT_EXT))
+    if (!include($include = ST_PATH . DS . $class_name . '.' . SCRIPT_EXT))
         throw new E("class ${include} not found", 404);
 }, true, true);
 
