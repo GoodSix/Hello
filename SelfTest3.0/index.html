@@ -28,6 +28,7 @@
         $.ajax({
             url: "/next/" + num,
             type: "GET",
+            dataType: "json",
             success: res => {
                 num ++;
                 $('#content').html(`
@@ -35,6 +36,8 @@
                     ${res.title}: ${res.declare}
                     <br />
                     常用的参数有${res.link.length}个
+                    <br />
+                    常用的参数有${res.param.length}个
                 `);
             },
             error: err => {
