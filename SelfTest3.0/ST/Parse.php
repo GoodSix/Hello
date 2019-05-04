@@ -55,11 +55,15 @@ class Parse {
         $st = [];
         $arr = explode(PHP_EOL, $this ->st);
         $last_key = 0;
+        $catalog = '';
         while(($item = next($arr)) !== false) {
             $temp = '';
-            if (preg_match('/^[^~#@`](\s{3}|\t)\S.*/', $item, $temp)) { // 匹配标题
+            if (preg_match('/^#+\s(.*)$/', $item, $temp)) { // 匹配分类
+                $catalog = end($temp);
+            }elseif (preg_match('/^[^~#@`](\s{3}|\t)\S.*/', $item, $temp)) { // 匹配标题
                 if ($temp = trim(reset($temp))) {
                     $st[$last_key]['title'] = $temp;
+                    $st[$last_key]['catalog'] = $catalog;
                     $last_key = count($st);
                 }
             }elseif (preg_match('/^[^#@`]\s{7}\S(.*)\s?(.*)\>\s(.*?)\S$/', $item, $temp)) { // 匹配参数
@@ -79,11 +83,11 @@ class Parse {
                 $st[$last_key - 1]['declare'] = trim($st[$last_key - 1]['declare']) . $eol . trim($temp[1]);
             }elseif (preg_match('/^[^#@`]\s{7}\@\s(.*)$/', $item, $temp)) { // 匹配关联
                 $temp[1] = str_ireplace('，', ',', $temp[1]);
-                if ($link = explode(',', trim($temp[1])))
-                    foreach ($link as $key =>$item) {
-                        $link[$key] = trim($item);
-                    }
-                    $st[$last_key - 1]['link'] = $link;
+                $link = explode(',', trim($temp[1]));
+                foreach ($link as $key =>$item) {
+                    $link[$key] = trim($item);
+                }
+                $st[$last_key - 1]['link'] = $link;
             }elseif (preg_match('/^[^#@`]\s{7}```$/', $item, $temp)) { // 匹配代码块
                 if (!array_key_exists('code', $st[$last_key - 1])) $st[$last_key - 1]['code'] = '';
                 $item = next($arr);

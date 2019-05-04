@@ -16,11 +16,20 @@ class TestObj extends Parse implements Iterator{
     public function getTitle() {
         return $this ->title;
     }
-    public function getCatalog() {
-        return $this ->catalog;
+    public function getCatalog($catalog = null) {
+        if ($catalog){
+            $temp = array_column($this ->catalog, 'name');
+            if (($index = array_search($catalog, $temp)) === false)
+                return null;
+            return $this ->catalog[$index];
+        }else
+            return $this ->catalog;
     }
-    public function getSt() {
-        return $this ->st;
+    public function getSt($index = null) {
+        if ($index !== null) {
+            return $this ->st[$index];
+        }else
+            return $this ->st;
     }
 
     public function current() {

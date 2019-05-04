@@ -2,5 +2,5 @@
 //error_reporting(0);
 
 include __DIR__ . '/base.php';
-
-var_dump((new TestObj('.')));
+$test = new TestObj('.');
+var_dump($test ->getSt(1));
