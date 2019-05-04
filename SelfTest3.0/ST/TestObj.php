@@ -42,4 +42,7 @@ class TestObj extends Parse implements Iterator{
     public function rewind() {
         // TODO: Implement rewind() method.
     }
+    public function __debugInfo() {
+        return $this ->st;
+    }
 }
