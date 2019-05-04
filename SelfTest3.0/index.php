@@ -19,5 +19,4 @@ $uri = preg_grep('/^[^\.]\w+$/', explode('/', $uri));
 $method = array_shift($uri);
 if (!method_exists($handler, $method))
     throw new E("The {$method} method cannot be found in the {$handler} class");
-
 $handler ->$method(...$uri);
