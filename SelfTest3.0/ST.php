@@ -2,4 +2,4 @@
 include __DIR__ . '/base.php';
 
 
-var_dump((new Parse('.')) ->getTitle());
+var_dump((new TestObj('.')) ->rewind());
