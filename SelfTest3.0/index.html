@@ -26,7 +26,7 @@
 </body>
 <script>
     let num = 0;
-    mdui.JQ("#next").click(function () {
+    document.getElementById('next').onclick = function () {
         mdui.JQ.ajax({
             url: "/next/" + num,
             type: "GET",
