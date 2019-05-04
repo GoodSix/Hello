@@ -20,20 +20,23 @@
 
         </div>
         <div>
-            <button class="mdui-fab mdui-fab-fixed mdui-ripple"><i class="mdui-icon material-icons">arrow_forward</i></button>
+            <button id="next" class="mdui-fab mdui-fab-fixed mdui-ripple"><i class="mdui-icon material-icons">arrow_forward</i></button>
         </div>
     </div>
 </body>
 <script>
-    mdui.JQ.ajax({
-        url: "/next",
-        type: "GET",
-        success: res => {
-            console.log(res);
-        },
-        error: err => {
-            console.log(err);
-        }
+    let num = 0;
+    mdui.JQ("#next").click(function () {
+        mdui.JQ.ajax({
+            url: "/next/" + num,
+            type: "GET",
+            success: res => {
+                console.log(res);
+            },
+            error: err => {
+                mdui.alert('请求失败');
+            }
+        });
     });
 </script>
 </html>
