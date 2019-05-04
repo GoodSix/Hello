@@ -32,6 +32,15 @@ class TestObj extends Parse{
             return $this ->st;
     }
 
+    public function getStByCatalog($catalog) {
+        $arr = [];
+        foreach ($this ->st as $k =>$item) {
+            if ($item['catalog'] == $catalog)
+                $arr[] = $this ->st[$k];
+        }
+        return $arr;
+    }
+
     public function __debugInfo() {
         return $this ->st;
     }

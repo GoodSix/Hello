@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <title>ST3.0 by ccheng</title>
+    <link rel="stylesheet" href="./static/css/mdui.min.css" />
+    <script src="./static/js/mdui.min.js"></script>
+    <style>
+        .container{
+            height: 100vh;
+            display: grid;
+            grid-template-columns: 1fr;
+            grid-template-rows: 60vh 1fr;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div>
+
+        </div>
+        <div>
+            <button class="mdui-fab mdui-fab-fixed mdui-ripple"><i class="mdui-icon material-icons">arrow_forward</i></button>
+        </div>
+    </div>
+</body>
+<script>
+    mdui.JQ.ajax({
+        url: "/next",
+        type: "GET",
+        success: res => {
+            console.log(res);
+        },
+        error: err => {
+            console.log(err);
+        }
+    });
+</script>
+</html>
