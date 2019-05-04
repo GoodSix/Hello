@@ -3,8 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>ST3.0 by ccheng</title>
-    <link rel="stylesheet" href="./static/css/mdui.min.css" />
-    <script src="./static/js/mdui.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
     <style>
         .container{
             height: 100vh;
@@ -16,27 +15,34 @@
 </head>
 <body>
     <div class="container">
-        <div>
+        <div id="content">
 
         </div>
-        <div>
-            <button id="next" class="mdui-fab mdui-fab-fixed mdui-ripple"><i class="mdui-icon material-icons">arrow_forward</i></button>
+        <div id="next" style="background: royalblue;">
         </div>
     </div>
 </body>
 <script>
     let num = 0;
-    document.getElementById('next').onclick = function () {
-        mdui.JQ.ajax({
+    $("#next").click(function () {
+        $.ajax({
             url: "/next/" + num,
             type: "GET",
             success: res => {
-                console.log(res);
+                num ++;
+                $('#content').html(`
+                    分类: ${res.catalog} <hr />
+                    ${res.title}: ${res.declare}
+                    <br />
+                    常用的参数有${res.link.length}个
+                    <br />
+                    相似的内容有${res.param.length}个
+                `);
             },
             error: err => {
-                mdui.alert('请求失败');
+                alert('请求失败');
             }
         });
-    };
+    });
 </script>
 </html>
