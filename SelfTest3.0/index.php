@@ -16,7 +16,7 @@ $handler = 'Handler_' . ucfirst(strtolower($handler));
 $handler = new $handler();
 // TODO:: cgi模式分离
 $uri = $_SERVER['REQUEST_URI'];
-$uri = preg_grep('/^[^\.]\w+$/', explode('/', $uri));
+$uri = preg_grep('/^[^\.]\w*$/', explode('/', $uri));
 $method = array_shift($uri);
 if (!method_exists($handler, $method))
     throw new E("The {$method} method cannot be found in the {$handler} class");
