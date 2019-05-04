@@ -11,7 +11,8 @@ define('SCRIPT_EXT', 'php');
  * 异常处理
  */
 set_exception_handler(function ($err) {
-    echo 'in file ' . $err ->getFile() . ':' . $err ->getLine() . " throw: \n" . $err ->getMessage() . "\n";
+    $eol = array_key_exists('argc', $_SERVER)? PHP_EOL: '<br />';
+    echo 'In file ' . $err ->getFile() . ':' . $err ->getLine() . " throw: {$eol}" . $err ->getMessage() . $eol;
 });
 
 
@@ -19,8 +20,8 @@ set_exception_handler(function ($err) {
  * 自动引入
  */
 spl_autoload_register(function ($class_name) {
-    $class_name = str_replace('\\', DS, $class_name);
-    if (!include($include = ST_PATH . DS . $class_name . '.' . SCRIPT_EXT))
-        throw new E("class ${include} not found", 404);
+    $class_name = str_replace('_', DS, $class_name);
+    if (!include(ST_PATH . DS . $class_name . '.' . SCRIPT_EXT))
+        throw new E("class ${class_name} not found", 404);
 }, true, true);
 

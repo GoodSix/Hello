@@ -79,7 +79,7 @@ class Parse {
                 $st[$last_key - 1]['return']['declare'] = trim($temp[2]);
             }elseif (preg_match('/^[^#@`]\s{7}\+\s(.*)/', $item, $temp)) { // 匹配介绍
                 if (!array_key_exists('declare', $st[$last_key - 1])) $st[$last_key - 1]['declare'] = '';
-                $eol = $_SERVER['argc']? PHP_EOL: '<br />';
+                $eol = array_key_exists('argc', $_SERVER)? PHP_EOL: '<br />';
                 $st[$last_key - 1]['declare'] = trim($st[$last_key - 1]['declare']) . $eol . trim($temp[1]);
             }elseif (preg_match('/^[^#@`]\s{7}\@\s(.*)$/', $item, $temp)) { // 匹配关联
                 $temp[1] = str_ireplace('，', ',', $temp[1]);
