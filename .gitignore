@@ -2,3 +2,4 @@
 /.vscode
 /.history
 *.http
+node_modules/*
