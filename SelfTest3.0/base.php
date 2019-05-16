@@ -4,6 +4,7 @@
 define('DS', DIRECTORY_SEPARATOR);
 define('ROOT_PATH', __DIR__);
 define('ST_PATH', ROOT_PATH . DS . 'ST');
+define('RUNTIME_PATH', ROOT_PATH . DS . 'Runtime');
 
 // 兼容配置
 define('ST_EXT', 'st');
@@ -15,7 +16,7 @@ set_exception_handler(function ($err) {
         $eol = PHP_EOL;
         echo 'In file ' . $err ->getFile() . ':' . $err ->getLine() . " throw: {$eol}" . $err ->getMessage() . $eol;
     }else {
-        echo resp([
+        echo json([
             'code'  => 1002,
             'msg'   =>$err ->getMessage()
         ]);

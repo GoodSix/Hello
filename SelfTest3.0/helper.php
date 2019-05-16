@@ -19,8 +19,15 @@ if (!function_exists('json')) {
 }
 
 if (!function_exists('resp')) {
-    function resp($msg, $code = 0) {
-        if (is_array($msg)) return json($msg);
-        return json(['err' => $code,'msg' => $msg]);
+    /**
+     * 接口数据格式处理
+     * @param $msg          如果这里是数据，那么参数2为状态码，默认为0
+     * @param null $data    如果参数1是要返回的数据，那么这里用来存放数据，否则此处应为状态码
+     * @param int $code     如果参数1是提示信息才会用到这个响应码
+     * @return string       转化格式后的内
+     */
+    function resp($msg, $data = null, $code = 0) {
+        if (is_array($msg)) return json(['data' =>$msg, 'err' =>$data ?? 0]);
+        return json(['msg' => $msg, 'data' =>$data,'err' => $code]);
     }
 }
