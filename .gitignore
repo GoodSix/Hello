@@ -2,6 +2,5 @@
 /.vscode
 /.history
 *.http
+*.log
 node_modules/*
-Runtime/*
-runtime/*
