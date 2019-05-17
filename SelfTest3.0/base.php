@@ -9,6 +9,7 @@ define('RUNTIME_PATH', ROOT_PATH . DS . 'Runtime');
 // 兼容配置
 define('ST_EXT', 'st');
 define('SCRIPT_EXT', 'php');
+define('WEB_EOL', '<br />');    // web下详情的换行方式
 
 // 异常处理
 set_exception_handler(function ($err) {
