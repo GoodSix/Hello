@@ -9,9 +9,10 @@ if (isset($argc)) {
     // web下之起接口作用
     header('Content-Type: application/json');
     header('token: ' . token());
-    if (!isset(getallheaders()['token'])
-        || empty(getallheaders()['token'])
-        || !check_token(getallheaders()['token'])
+    $rt = $_SERVER['HTTP_TOKEN'];
+    if (!isset($rt)
+        || empty($rt)
+        || !check_token($rt)
     ) {
         echo resp('给我滚犊子', null, 1005);
         die;
