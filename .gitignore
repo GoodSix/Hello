@@ -4,3 +4,6 @@
 *.http
 *.log
 node_modules/*
+package-lock.json
+runtime/*
+dist/*

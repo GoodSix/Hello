@@ -8,15 +8,15 @@ if (isset($argc)) {
 }else {
     // web下之起接口作用
     header('Content-Type: application/json');
-    header('token: ' . token());
-    $rt = $_SERVER['HTTP_TOKEN'];
-    if (!isset($rt)
-        || empty($rt)
-        || !check_token($rt)
-    ) {
-        echo resp('给我滚犊子', null, 1005);
-        die;
-    }
+    // header('token: ' . token());
+    // $rt = $_SERVER['HTTP_TOKEN'] ?? null;
+    // if (!isset($rt)
+    //     || empty($rt)
+    //     || !check_token($rt)
+    // ) {
+    //     echo resp('给我滚犊子', null, 1005);
+    //     die;
+    // }
 
     $uri = $_SERVER['REQUEST_URI'];
     $uri = preg_grep('/^[^\.]\w*$/', explode('/', $uri));
