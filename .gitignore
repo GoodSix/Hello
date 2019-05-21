@@ -3,7 +3,7 @@
 /.history
 *.http
 *.log
-node_modules/*
 package-lock.json
-runtime/*
-dist/*
+**/runtime/*
+**/dist/*
+**/node_modules/*

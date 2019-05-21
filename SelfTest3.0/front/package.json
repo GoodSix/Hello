@@ -1,5 +1,5 @@
 {
-  "name": "fornt",
+  "name": "front",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -10,7 +10,6 @@
   "dependencies": {
     "axios": "^0.18.0",
     "core-js": "^2.6.5",
-    "sweetalert": "^2.1.2",
     "vue": "^2.6.10",
     "vue-router": "^3.0.6"
   },
