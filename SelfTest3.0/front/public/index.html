@@ -6,6 +6,17 @@
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
     <link rel="icon" href="<%= BASE_URL %>favicon.gif">
     <title>front</title>
+    <script>
+        let ua = navigator.userAgent;
+        let ipad = ua.match(/(iPad).*OS\s([\d_]+)/),
+            isIphone = !ipad && ua.match(/(iPhone\sOS)\s([\d_]+)/),
+            isAndroid = ua.match(/(Android)\s+([\d.]+)/),
+            isMobile = isIphone || isAndroid;
+
+        if (!isMobile) {
+            location.href = '/pc.html';
+        }
+    </script>
 </head>
 <body>
 <div id="app"></div>

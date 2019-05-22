@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <title>ST3.0</title>
+    <link rel="stylesheet" href="./pc/css/global.css">
+    <link rel="icon" href="./favicon.gif">
+    <script type="text/javascript" src="../node_modules/vue/dist/vue.min.js"></script>
+    <script type="text/javascript">
+        let ua = navigator.userAgent;
+        let ipad = ua.match(/(iPad).*OS\s([\d_]+)/),
+            isIphone = !ipad && ua.match(/(iPhone\sOS)\s([\d_]+)/),
+            isAndroid = ua.match(/(Android)\s+([\d.]+)/),
+            isMobile = isIphone || isAndroid;
+
+        if (isMobile) {
+            location.href = '/index.html';
+        }
+
+        document.onselectstart = function () {
+            return false;
+        }
+    </script>
+</head>
+
+<body>
+    <div id="app">
+        <div class="nav">
+            <div :class="{target:page.target == 1}" @click="p(1, 'index')">首页</div>
+            <hr class="n">
+            <div :class="{target:page.target == 2}" @click="p(2, 'home')">练习</div>
+            <hr class="n">
+            <div :class="{target:page.target == 3}" @click="p(3, 'history')">历史</div>
+            <input type="text" placeholder="文件/笔记">
+        </div>
+
+        <keep-live class="left">
+            <component :is="page.left"></component>
+        </keep-live>
+        <keep-live class="right">
+            <component :is="page.right"></component>
+        </keep-live>
+
+    </div>
+</body>
+
+<template id="index">
+    <div>
+        首页
+    </div>
+</template>
+
+<template id="home">
+    <div>
+        主页
+    </div>
+</template>
+
+<template id="history">
+    <div>
+        历史页面
+    </div>
+</template>
+
+<script type="text/javascript">
+    new Vue({
+        el: "#app",
+        data: {
+            page: {
+                left: 'index',
+                right: 'history',
+                target: 1
+            }
+        },
+        methods: {
+            p(target, page) {
+                this.page.target = target;
+                this.page.left = page;
+            }
+        },
+        components: {
+            'index': {
+                template: '#index'
+            },
+            'home': {
+                template: '#home'
+            },
+            'history': {
+                template: '#history'
+            }
+        }
+    })
+</script>
+</html>
