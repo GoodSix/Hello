@@ -13,7 +13,7 @@ if (isset($argc)) {
     $rt = $_SERVER['HTTP_TOKEN'] ?? null;
     if (!isset($rt)
         || empty($rt)
-        || !check_token($rt)
+        || !checkToken($rt)
     ) {
         echo resp('给我滚犊子', null, 1005);
         die;
@@ -29,6 +29,7 @@ if (isset($argc)) {
     $resp = $app->$action(...$uri);
     if (!$resp || !is_string($resp)) throw new E('Data type error, please perform on server');
     echo $resp;
-}else {
-    header('location: /index.html');
+} else {
+    if (isMobile()) header('location: /index.html');
+    else header('location: /pc.html');
 }

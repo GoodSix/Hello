@@ -56,12 +56,68 @@ if (!function_exists('token_verify')) {
      * @param string $token 被验证的token
      * @return bool
      */
-    function check_token($token) {
+    function checkToken($token) {
         $time = '';
         for($i = 0; $i < strlen($token); $i += 3) {
             $time .= $token[$i];
         }
         $time = substr($time, 0, 10);
         return is_numeric($time) && $time > time();
+    }
+}
+
+if (!function_exists('isMobile')) {
+    /**
+     * 检测是否为移动端请求
+     * @return bool
+     */
+    function isMobile() {
+        // 如果有HTTP_X_WAP_PROFILE则一定是移动设备
+        if (isset ($_SERVER['HTTP_X_WAP_PROFILE'])) {
+            return true;
+        }
+        // 如果via信息含有wap则一定是移动设备
+        if (isset ($_SERVER['HTTP_VIA'])) {
+            return stristr($_SERVER['HTTP_VIA'], "wap") ? true : false;
+        }
+        if (isset ($_SERVER['HTTP_USER_AGENT'])) {
+            $clientkeywords = array('nokia',
+                'sony',
+                'ericsson',
+                'mot',
+                'samsung',
+                'htc',
+                'sgh',
+                'lg',
+                'sharp',
+                'sie-',
+                'philips',
+                'panasonic',
+                'alcatel',
+                'lenovo',
+                'iphone',
+                'ipod',
+                'blackberry',
+                'meizu',
+                'android',
+                'netfront',
+                'symbian',
+                'ucweb',
+                'windowsce',
+                'palm',
+                'operamini',
+                'operamobi',
+                'openwave',
+                'nexusone',
+                'cldc',
+                'midp',
+                'wap',
+                'mobile'
+            );
+            // 从HTTP_USER_AGENT中查找手机浏览器的关键字
+            if (preg_match("/(" . implode('|', $clientkeywords) . ")/i", strtolower($_SERVER['HTTP_USER_AGENT']))) {
+                return true;
+            }
+        }
     }
 }
