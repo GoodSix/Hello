@@ -2,7 +2,7 @@
 
 // 项目配置
 define('DS', DIRECTORY_SEPARATOR);
-define('ROOT_PATH', getcwd());
+define('ROOT_PATH', dirname(__DIR__));
 define('ST_PATH', ROOT_PATH . DS . 'ST');
 define('RUNTIME_PATH', ROOT_PATH . DS . 'runtime');
 if (!file_exists(RUNTIME_PATH)) mkdir(RUNTIME_PATH, 0777, false);
