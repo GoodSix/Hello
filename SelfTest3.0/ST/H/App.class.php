@@ -2,17 +2,32 @@
 
 class H_App{
 
+    private $index;
+
     /**
      * 获取ST文件列表
      * @return string
      * @throws E
      */
     public function fileList() {
-        $file_list = LoadFile::getList(dirname(ROOT_PATH) . DS . 'ST');
-        foreach ($file_list as &$value){
-            $value = (new Parse($value)) ->getTitle();
+        $path = dirname(ROOT_PATH) . DS . 'ST';
+        $file_list = LoadFile::getList($path);
+        $arr = [];
+        $i = 0;
+        foreach ($file_list as $key =>$value){
+            if (++ $i == $this ->index) return $value;
+            $p = dirname(str_replace($path . DS, '', $value));
+            $p = '\'' . implode('\'][\'', explode(DS, $p)) . '\'';
+
+            // 尝试根据语法获取标题，如果获取不到则使用文件名用作标题
+            $title = (new Parse($value)) ->getTitle()
+                ?? pathinfo($value, PATHINFO_FILENAME);
+            // 数据生成
+            eval("\$arr[{$p}][$i] = '$title';");
+
+            // 进入下一步需要获取文件路径
         }
-        return resp($file_list);
+        return resp($arr);
     }
 
     /**
@@ -23,14 +38,15 @@ class H_App{
      * @throws E
      */
     public function start($action, ...$param) {
-        // 合并POST param参数
-        $param = array_merge(array_filter($param), [$_POST['param'] ?? '']);
         // 获取到指定的st文件
-        $filename = LoadFile::getList(dirname(ROOT_PATH) . DS . 'ST');
-        if (array_key_exists($file_index = $_POST['file'] ?? 0, $filename)) {
-            $filename = $filename[$file_index];
-            $resp = (new TestObj($filename)) ->$action(...$param);
-            return resp($resp? $resp: '没有获取到数据', $resp? null: 1003);
+        $this ->index = $_POST['file'];
+        $st = $this ->fileList();
+
+        if (is_string($st) && is_file($st)) {
+            // 合并POST param参数
+            $param = array_merge(array_filter($param), [$_POST['param'] ?? '']);
+            $resp = (new TestObj($st)) ->$action(...$param);
+            return resp($resp? $resp: '没有解析到数据', $resp? null: 1003);
         }else {
             return resp('找不到该文件', null, 1006);
         }

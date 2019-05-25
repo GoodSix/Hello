@@ -8,7 +8,7 @@ class Parse {
     public function __construct(string $st) {
         if (is_file($st) && is_readable($st)) $st = file_get_contents($st);
         elseif (is_dir($st) && is_readable($st)) $st = file_get_contents(LoadFile::getList($st)[0]);
-        elseif (strpos($st, PHP_EOL) === false) throw new E('别他妈扯了，你他妈的就是想调戏我了');
+        elseif (strpos($st, PHP_EOL) === false) throw new E('这可能不是一个有效的文件夹');
         $this ->st = $st;
     }
 
@@ -20,7 +20,7 @@ class Parse {
         $title = [];
         $arr = explode(PHP_EOL, $this->st);
         for ($i = 0; $i < 10; $i++) {
-            if (preg_match('/^\~\s(.*?)\s\~$/', trim($arr[$i]), $title))
+            if (preg_match('/^\~\s(.*?)\s\~$/', trim($arr[$i] ?? ''), $title))
                 return end($title);
         }
     }

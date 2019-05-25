@@ -23,7 +23,7 @@ if (!function_exists('resp')) {
      * 接口数据格式处理
      * @param $msg       如果这里是数据，那么参数2为状态码，默认为0
      * @param null $data 如果参数1是要返回的数据，那么这里用来存放数据，否则此处应为状态码
-     * @param int $code  如果参数1是提示信息才会用到这个响应码
+     * @param int $code 如果参数1是提示信息才会用到这个响应码
      * @return string       转化格式后的内
      */
     function resp($msg, $data = null, $code = 0) {
@@ -42,7 +42,7 @@ if (!function_exists('token')) {
         $token = md5(md5(time() . $token) . $token . time() . mt_rand(0, 1000));
         $sort = range(0, strlen($token), 3);
         $time = '' . strtotime('+10 minute');
-        foreach($sort as $key =>$value) {
+        foreach ($sort as $key => $value) {
             if (!isset($time[$key])) break;
             $token[$value] = $time[$key];
         }
@@ -58,7 +58,7 @@ if (!function_exists('token_verify')) {
      */
     function checkToken($token) {
         $time = '';
-        for($i = 0; $i < strlen($token); $i += 3) {
+        for ($i = 0; $i < strlen($token); $i += 3) {
             $time .= $token[$i];
         }
         $time = substr($time, 0, 10);
@@ -119,5 +119,17 @@ if (!function_exists('isMobile')) {
                 return true;
             }
         }
+    }
+}
+
+if (!function_exists('halt')) {
+    /**
+     * 调式输出
+     * @param array $param
+     */
+    function halt(...$param) {
+        header('Content-Type: text/html;charset=UTF-8');
+        var_dump(...$param);
+        die();
     }
 }
