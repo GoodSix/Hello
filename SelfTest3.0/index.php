@@ -5,7 +5,7 @@ include __DIR__ . '/ST/base.php';
 
 if (isset($argc)) {
 
-} else if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && ($_SERVER['HTTP_X_REQUESTED_WITH'] == 'XMLHttpRequest')) {
+} else if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && ($_SERVER['HTTP_X_REQUESTED_WITH'] == 'XMLHttpRequest') || isset($_SERVER['HTTP_TOKEN'])) {
     header('Access-Control-Allow-Origin: *');
     // web下只起接口作用
     header('Content-Type: application/json');
@@ -15,7 +15,7 @@ if (isset($argc)) {
         || empty($rt)
         || !checkToken($rt)
     ) {
-        echo resp('给我滚犊子', null, 1005);
+        echo resp('身份验证失败', null, 1005);
         die;
     }
 
