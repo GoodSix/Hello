@@ -1,6 +1,6 @@
 <?php
 
-class H_App{
+class H_App {
 
     private $index;
 
@@ -20,7 +20,7 @@ class H_App{
             $p = '\'' . implode('\'][\'', explode(DS, $p)) . '\'';
 
             // 尝试根据语法获取标题，如果获取不到则使用文件名用作标题
-            $title = (new Parse($value)) ->getTitle()
+            $title = (new TestObj($value)) ->getTitle()
                 ?? pathinfo($value, PATHINFO_FILENAME);
             // 数据生成
             eval("\$arr[{$p}][$i] = '$title';");
@@ -39,14 +39,14 @@ class H_App{
      */
     public function start($action, ...$param) {
         // 获取到指定的st文件
-        $this ->index = $_POST['file'];
+        $this ->index = $_POST['file'] ?? -1;
         $st = $this ->fileList();
 
         if (is_string($st) && is_file($st)) {
             // 合并POST param参数
             $param = array_merge(array_filter($param), [$_POST['param'] ?? '']);
             $resp = (new TestObj($st)) ->$action(...$param);
-            return resp($resp? $resp: '没有解析到数据', $resp? null: 1003);
+            return resp($resp? $resp: '没有解析到数据', null, 1003);
         }else {
             return resp('找不到该文件', null, 1006);
         }

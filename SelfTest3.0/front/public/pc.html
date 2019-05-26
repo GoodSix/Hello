@@ -6,6 +6,9 @@
     <link rel="stylesheet" href="/pc/css/global.css">
     <link rel="icon" href="/favicon.gif">
     <script type="text/javascript" src="/pc/js/vue.min.js"></script>
+    <script type="text/javascript" src="/pc/js/axios.min.js"></script>
+    <script type="text/javascript" src="/pc/js/sweetalert.min.js"></script>
+
     <script type="text/javascript">
         let ua = navigator.userAgent;
         let ipad = ua.match(/(iPad).*OS\s([\d_]+)/),
@@ -17,8 +20,39 @@
             location.href = '/index.html';
         }
 
-        document.onselectstart = function () {
-            return false;
+        document.onselectstart = () => false;
+
+        axios.defaults.headers.common['x_requested_with'] = 'XMLHttpRequest';
+
+        function req(url, param = null, func) {
+            if (!sessionStorage['token']){
+                axios.get('/index.php/filelist').then(res => {
+                    sessionStorage['token'] = res.headers.token;
+                });
+            }else {
+                let p = '';
+                for (key of Object.keys(param)) {
+                    p += `${key}=${param[key]}&`;
+                }
+                axios.post('/index.php/' + url, p, {
+                    headers: {
+                        'token': sessionStorage['token'],
+                        'Content-Type': 'application/x-www-form-urlencoded'
+                    },
+                }).then( res => {
+                    if (res.data.err == 0) {
+                        func(res.data.data);
+                    }else {
+                        swal({
+                            title: '好像出了点问题呢',
+                            text: `${res.data.msg}:${res.data.err}`,
+                        }).then( () => {
+                            sessionStorage.removeItem('token');
+                        });
+                        return false;
+                    }
+                });
+            }
         }
     </script>
 </head>
@@ -26,11 +60,7 @@
 <body>
     <div id="app">
         <div class="nav">
-            <div :class="{target:page.target == 1}" @click="p(1, 'index')">首页</div>
-            <hr class="n">
-            <div :class="{target:page.target == 2}" @click="p(2, 'home')">练习</div>
-            <hr class="n">
-            <div :class="{target:page.target == 3}" @click="p(3, 'history')">历史</div>
+            <div>{{ title }}</div>
             <input type="text" placeholder="文件/笔记">
         </div>
 
@@ -46,13 +76,33 @@
 
 <template id="index">
     <div>
-        首页
+        <img style="height: 99%;width: 100%;" src="https://img01.sogoucdn.com/app/a/100520021/882f1e00ccdaaad0782e8e79b45f02a6">
     </div>
 </template>
 
 <template id="home">
-    <div>
-        主页
+    <div class="st">
+        <div class="title">标题</div>
+        <div class="warning">注意事项的各种说明</div>
+        <ul class="progress">
+            <!--<li @click="tab"> < </li>-->
+
+            <li v-for="(item, key) in current" :key="key" :title="item.title">
+                {{ key }}
+            </li>
+
+            <!--<li @click="tab"> > </li>-->
+        </ul>
+        <!-- 答题区域 -->
+        <div class="area">
+            <!-- 设计是有个这东西，那就来一个吧 -->
+            <div class="title">GENIE</div>
+            <div class="issue">我是问题啊我是问题啊我是问题啊我是问题啊我是问题啊我是问题啊我是问题啊我是问题啊我是问题啊我是问题啊我是问题啊我是问题啊我是问题啊我是问题啊我是问题啊我是问题啊我是问题啊我是问题啊我是问题啊我是问题啊我是问题啊我是问题啊我是问题啊我是问题啊我是问题啊我是问题啊我是问题啊我是问题啊我是问题啊我是问题啊我是问题啊我是问题啊</div>
+            <!-- 回答区域 -->
+            <div class="answer">
+                <textarea name="" id="" style="resize: none" cols="30" rows="10"></textarea>
+            </div>
+        </div>
     </div>
 </template>
 
@@ -62,31 +112,112 @@
     </div>
 </template>
 
+<template id="right-catalog">
+    <div style="position: relative;">
+        <ul class="catalog">
+            <li v-for="(item,key) in path || catalog" :key="key" @click="enter(key)" :title="typeof item != 'string'? key: item">
+                <span v-if="typeof item != 'string'">
+                    <img src="/pc/img/dir.png" alt="dir">{{ key }}
+                </span>
+                <span v-else>
+                    <img src="/pc/img/file.png" alt="file">
+                    {{ item }}
+                </span>
+            </li>
+        </ul>
+        <div style="position: absolute;right: 10px;bottom: 10px;cursor: default">
+            <span style="color: grey;">by ccheng</span>
+            <img src="/pc/img/back.png" alt="back" @click="back" style="height: 25px;cursor: pointer;">
+        </div>
+    </div>
+</template>
+
 <script type="text/javascript">
+    let eventBus = new Vue;
+
     new Vue({
         el: "#app",
         data: {
+            title: '永远相信，美好的事情即将发生',
             page: {
-                left: 'index',
-                right: 'history',
-                target: 1
+                left: 'home',
+                right: 'right-catalog',
             }
         },
-        methods: {
-            p(target, page) {
-                this.page.target = target;
-                this.page.left = page;
-            }
+        created() {
+            eventBus.$on('title', title => {
+                this.title = title;
+            });
+            eventBus.$on('page-left', pl =>{
+                this.page.left = pl;
+            });
+            eventBus.$on('page-right', pr =>{
+                this.page.left = pr;
+            });
         },
         components: {
             'index': {
-                template: '#index'
+                template: '#index',
             },
+            // 主页
             'home': {
-                template: '#home'
+                template: '#home',
+                data() {
+                    return {
+                        // 概览
+                        current: null,
+                        // 当前解析
+                        st: null
+                    }
+                },
+                methods: {
+                    start() {
+                        req('/start/getst', {
+                            file: sessionStorage.getItem('file'),
+                        }, data => {
+                            this.current = data;
+                            console.log(this.current);
+                        });
+                    },
+                    tab() {
+                        swal('点我没啥用的');
+                    }
+                },
+                mounted() {
+                    this.start();
+                }
             },
             'history': {
                 template: '#history'
+            },
+            'right-catalog': {
+                template: '#right-catalog',
+                data() {
+                    return {
+                        'catalog': null,
+                        'path': null,
+                    }
+                },
+                methods:{
+                    enter(key){
+                        let next = this.catalog[key];
+                        if (typeof next != 'string'){
+                            this.catalog = next;
+                        }else {
+                            sessionStorage.setItem('file', key);
+                            eventBus.$emit('title', '练习');
+                            eventBus.$emit('page-left', 'home');
+                        }
+                    },
+                    back() {
+                        req('/filelist', {}, data => {
+                            this.catalog = data;
+                        });
+                    }
+                },
+                mounted() {
+                    this.back();
+                }
             }
         }
     })

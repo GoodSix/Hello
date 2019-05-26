@@ -70,13 +70,6 @@ class TestObj extends Parse{
     }
 
     /**
-     * TODO:: 验证
-     */
-    public function verify() {
-
-    }
-
-    /**
      * debug打印的数据
      * @return array|false|string
      */

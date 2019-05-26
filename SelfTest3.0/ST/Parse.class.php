@@ -1,7 +1,7 @@
 <?php
 
 
-class Parse {
+abstract class Parse {
 
     private $st = 'ccheng';
 
