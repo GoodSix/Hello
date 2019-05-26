@@ -80,6 +80,7 @@ abstract class Parse {
             }elseif (preg_match('/^[^#@`]\s{7}\+\s(.*)/', $item, $temp)) { // 匹配介绍
                 if (!array_key_exists('declare', $st[$last_key - 1])) $st[$last_key - 1]['declare'] = '';
                 $eol = array_key_exists('argc', $_SERVER)? PHP_EOL: WEB_EOL;
+                if (!$st[$last_key - 1]['declare']) $eol = ''; // 我是谁，我在哪，我在干什么？这句代码有什么用？？？为毛没事了？？？？?
                 $st[$last_key - 1]['declare'] = trim($st[$last_key - 1]['declare']) . $eol . trim($temp[1]);
             }elseif (preg_match('/^[^#@`]\s{7}\@\s(.*)$/', $item, $temp)) { // 匹配关联
                 $temp[1] = str_ireplace('，', ',', $temp[1]);

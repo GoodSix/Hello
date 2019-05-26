@@ -18,6 +18,8 @@
 
         if (isMobile) {
             location.href = '/index.html';
+        }else {
+            window.onbeforeunload = () => false;
         }
 
         document.onselectstart = () => false;
@@ -82,12 +84,11 @@
 
 <template id="home">
     <div class="st">
-        <div class="title">标题</div>
-        <div class="warning">注意事项的各种说明</div>
-        <ul class="progress">
+        <div class="title">你的魔鬼来了哦</div>
+        <ul class="progress" ref="progress">
             <!--<li @click="tab"> < </li>-->
 
-            <li v-for="(item, key) in current" :key="key" :title="item.title">
+            <li v-for="(item, key) in list" :key="key" :title="item.declare" :class="{active:index - 1 == key}">
                 {{ key }}
             </li>
 
@@ -95,12 +96,32 @@
         </ul>
         <!-- 答题区域 -->
         <div class="area">
+            <!--{{ current }}-->
             <!-- 设计是有个这东西，那就来一个吧 -->
             <div class="title">GENIE</div>
-            <div class="issue">我是问题啊我是问题啊我是问题啊我是问题啊我是问题啊我是问题啊我是问题啊我是问题啊我是问题啊我是问题啊我是问题啊我是问题啊我是问题啊我是问题啊我是问题啊我是问题啊我是问题啊我是问题啊我是问题啊我是问题啊我是问题啊我是问题啊我是问题啊我是问题啊我是问题啊我是问题啊我是问题啊我是问题啊我是问题啊我是问题啊我是问题啊我是问题啊</div>
+            <div class="issue" v-html="current.declare">{{ current.declare }}</div>
+
             <!-- 回答区域 -->
             <div class="answer">
-                <textarea name="" id="" style="resize: none" cols="30" rows="10"></textarea>
+                <div v-if="!current.answer || !current.answer.type || current.answer.type == 0">
+                    <textarea @keypress.enter.prevent="n()"></textarea>
+                </div>
+                <div v-else-if="current.answer == 1">
+                    <div v-for="item,key in current.answer.item" :key="key">
+                        <input type="radio" :id="key">
+                        <label class="radio" :for="key">{{ item.name }}</label>
+                    </div>
+                </div>
+                <div v-else-if="current.answer == 2">
+                    <div v-for="item,key in current.answer.item" :key="key">
+                        <input type="checkbox" :id="key">
+                        <label class="checkbox" :for="key">{{ item.name }}</label>
+                    </div>
+                </div>
+
+                <div class="menu">
+                    <button @click="n">下一题</button>
+                </div>
             </div>
         </div>
     </div>
@@ -132,6 +153,15 @@
     </div>
 </template>
 
+<template id="right-analyze">
+    <div class="tips">
+        小提示：<br>
+        隶属于{{ current.catalog }}<br>
+        <div class="tips" v-if="current.param">根据记载，它的常用参数有{{ Object.keys(current.param && current.param[0] || {}).length - 1 }}个<br></div>
+        <div class="tips" v-if="current.link"><span class="tips" v-for="item in current.link">{{ item }}、</span>和它有py交易</div>
+    </div>
+</template>
+
 <script type="text/javascript">
     let eventBus = new Vue;
 
@@ -140,7 +170,7 @@
         data: {
             title: '永远相信，美好的事情即将发生',
             page: {
-                left: 'home',
+                left: 'index',
                 right: 'right-catalog',
             }
         },
@@ -152,7 +182,7 @@
                 this.page.left = pl;
             });
             eventBus.$on('page-right', pr =>{
-                this.page.left = pr;
+                this.page.right = pr;
             });
         },
         components: {
@@ -165,9 +195,11 @@
                 data() {
                     return {
                         // 概览
-                        current: null,
+                        list: null,
                         // 当前解析
-                        st: null
+                        current: null,
+                        // 当前位置
+                        index: 0,
                     }
                 },
                 methods: {
@@ -175,20 +207,64 @@
                         req('/start/getst', {
                             file: sessionStorage.getItem('file'),
                         }, data => {
-                            this.current = data;
-                            console.log(this.current);
+                            this.list = data;
+                            this.n();
                         });
                     },
-                    tab() {
-                        swal('点我没啥用的');
+                    // 进入下一题
+                    n() {
+                        let next = this.list[this.index ++];
+                        if (next) {
+                            this.current = next;
+                            eventBus.$emit('st_current', this.current);
+
+                            let gress = document.querySelector('li.active').offsetLeft;
+                            if(this.$refs.progress && gress && this.$refs.progress.scrollLeft < gress) {
+                                let interval = setInterval(() => {
+                                    if (this.$refs.progress.scrollLeft < gress - 100)
+                                        this.$refs.progress.scrollLeft = gress - 50;
+                                    else if (this.$refs.progress.scrollLeft < gress)
+                                        this.$refs.progress.scrollLeft += 3;
+                                    else clearInterval(interval);
+                                }, 10);
+                                setTimeout(() => {
+                                    clearInterval(interval);
+                                }, 1000);
+                            }
+                        }else {
+                            // 完成汇总
+                            swal('已经完成所有了哦');
+                        }
+                        return false;
+                    },
+                    verify() {
+
                     }
                 },
                 mounted() {
                     this.start();
+                    eventBus.$on('getst', this.start);
                 }
             },
             'history': {
                 template: '#history'
+            },
+            'right-analyze': {
+                template: '#right-analyze',
+                data() {
+                    return {
+                        // 和侧边是一样的，只显示一下不做改变
+                        current: null,
+                    }
+                },
+                methods: {
+                    stCurrent(data) {
+                        this.current = data;
+                    }
+                },
+                mounted() {
+                    eventBus.$on('st_current', this.stCurrent);
+                }
             },
             'right-catalog': {
                 template: '#right-catalog',
@@ -207,6 +283,8 @@
                             sessionStorage.setItem('file', key);
                             eventBus.$emit('title', '练习');
                             eventBus.$emit('page-left', 'home');
+                            eventBus.$emit('page-right', 'right-analyze');
+                            eventBus.$emit('getst');
                         }
                     },
                     back() {
