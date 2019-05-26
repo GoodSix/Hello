@@ -30,6 +30,7 @@
             if (!sessionStorage['token']){
                 axios.get('/index.php/filelist').then(res => {
                     sessionStorage['token'] = res.headers.token;
+                    req(url, param, func);
                 });
             }else {
                 let p = '';
