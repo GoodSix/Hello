@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="user-scalable=0">
+    <title>ヽ(￣ω￣(￣ω￣〃)ゝ撒拉嘿</title>
+    <link rel="stylesheet" href="/pc/css/global.css">
+    <link rel="icon" href="/favicon.gif">
+    <script type="text/javascript" src="/pc/js/vue.min.js"></script>
+    <script type="text/javascript" src="/pc/js/axios.min.js"></script>
+    <script type="text/javascript" src="/pc/js/sweetalert.min.js"></script>
+    <script type="text/javascript" src="/pc/js/encrypt.js"></script>
+
+    <script type="text/javascript">
+        let ua = navigator.userAgent;
+        let ipad = ua.match(/(iPad).*OS\s([\d_]+)/),
+            isIphone = !ipad && ua.match(/(iPhone\sOS)\s([\d_]+)/),
+            isAndroid = ua.match(/(Android)\s+([\d.]+)/),
+            isMobile = isIphone || isAndroid;
+
+
+        document.onselectstart = () => false;
+
+        axios.defaults.headers.common['x_requested_with'] = 'XMLHttpRequest';
+
+        function req(url, param = null, func) {
+            if (!sessionStorage['token']){
+                axios.get('/api.php/filelist').then(res => {
+                    sessionStorage['token'] = res.headers.token;
+                    req(url, param, func);
+                });
+            }else {
+                let p = '';
+                if (param) {
+                    for (key of Object.keys(param)) {
+                        p += `${key}=${param[key]}&`;
+                    }
+                }
+                axios.post('/api.php/' + url, p, {
+                    headers: {
+                        'token': sessionStorage['token'],
+                        'Content-Type': 'application/x-www-form-urlencoded'
+                    },
+                }).then( res => {
+                    if (res.data.err == 0) {
+                        if (func) {
+                            func(res.data.data, res.data);
+                        }
+                    }else {
+                        if (res.data.err == 1005) {
+                            sessionStorage.removeItem('token');
+                            req(url, param, func);
+                            return;
+                        }
+                        swal({
+                            title: '好像出了点问题呢',
+                            text: `${res.data.msg}:${res.data.err}`,
+                            icon: 'error'
+                        }).then( () => {
+                            window.onbeforeunload = true;
+                            sessionStorage.removeItem('token');
+                            if (func) location.reload();
+                        });
+                        return false;
+                    }
+                });
+            }
+        }
+        
+        let verify = randomString();
+    </script>
+</head>
+
+<body>
+<div id="app">
+    <div v-if="!isMobile" class="nav">
+        <div>{{ title }}</div>
+        <input type="text" placeholder="文件/笔记" @keypress.enter="search" v-model="s">
+    </div>
+    <div v-else>
+        <div style="color: white;">永远相信，美好的事情即将发生</div>
+    </div>
+
+    <keep-live class="left">
+        <component :is="page.left"></component>
+    </keep-live>
+    <keep-live class="right">
+        <component :is="page.right"></component>
+    </keep-live>
+
+    <img style="display: none" src="/pc/img/file.png" alt="预加载图标">
+</div>
+</body>
+
+<template id="index">
+    <div class="reduce">
+        <!--{{ reduce }}-->
+        <div class="detail">
+            <img v-if="detail" @click="detail = null" src="/pc/img/back.png" alt="back" style="height: 25px;cursor: pointer;position: fixed">
+            <div v-for="item in detail">
+                <span v-html="item.issue.issue"></span>&emsp;
+                <span style="color: grey" v-if="typeof item.issue.answer == 'object'">
+                    <span v-for="i in item.issue.answer">{{ i }}、</span>
+                </span>
+                <span style="color: grey" v-else>{{ item.issue.answer }}</span>
+            </div>
+        </div>
+        <span v-if="!detail">欢迎回来</span>
+        <div class="record" v-if="!detail" v-for="item,key in reduce" :key="key" style="margin-bottom: 10px;">
+            您在<span style="color: #ff5a5f;">{{ key }}</span>有<span style="color: #ff5a5f;">{{ Object.keys(item).length }}</span>次做题记录
+            <div v-for="i,k in item" :key="k">
+                <span style="opacity: 0.5;">&emsp;{{i.time}}</span>
+                <div>
+                    <span style="cursor: pointer" @click="details(i.data.sum)">&emsp;&emsp;做了{{ i.data.sum?i.data.sum.length: 0 }}个题目</span>，
+                    <span style="cursor: pointer" @click="details(i.data.success)" class="success">正确{{ i.data.success? i.data.success.length: 0 }}个</span>，
+                    <span style="cursor: pointer" @click="details(i.data.error)" class="error">做错了{{ i.data.error? i.data.error.length: 0 }}个</span>，
+                    <span style="cursor: pointer" @click="details(i.data.jump)" class="jump">跳过了{{ i.data.jump? i.data.jump.length: 0 }}个</span>。
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
+
+<template id="home">
+    <div class="st">
+        <div class="title">{{ title }}</div>
+        <ul class="progress" ref="progress">
+            <!--<li @click="tab"> < </li>-->
+
+            <li v-for="(item, key) in list" :key="key" v-if="item.issue" :title="item.issue.issue" :class="nav[key]">
+                {{ key }}
+            </li>
+
+            <!--<li @click="tab"> > </li>-->
+        </ul>
+        <!-- 答题区域 -->
+        <div class="area">
+            <!--{{ current }}-->
+            <!-- 设计是有个这东西，那就来一个吧 -->
+            <div class="title">
+                GENIE
+            </div>
+            <div class="issue" v-html="current.issue.issue || '内容获取失败，请检查对应的st文件'"></div>
+            <div :class="{'hint': true, 'success': hint.success}">
+                {{ hint.text }}
+            </div>
+            <!-- 回答区域 -->
+            <div class="answer">
+                <!-- 回答题 -->
+                <div v-if="current.issue.type == 'text'">
+                    <textarea @keypress.enter.prevent="n()" v-model="answer"></textarea>
+                </div>
+                <!-- 单选题 -->
+                <div v-else-if="current.issue.type == 'radio'" :class="{'select':true, 'mobile-radio': isMobile}">
+                    <div v-for="item,key in current.issue.item" :key="key">
+                        <input name="radio" type="radio" :id="key" :value="item" v-model="answer">
+                        <label class="radio" :for="key">{{ item }}</label>
+                    </div>
+                </div>
+                <!-- 多选题 -->
+                <div v-else-if="current.issue.type == 'checkbox'" :class="{'select':true, 'mobile-radio': isMobile}">
+                    <div v-for="item,key in current.issue.item" :key="key">
+                        <input name="checkbox[]" type="checkbox" :id="key" :value="item" v-model="answer">
+                        <label class="checkbox" :for="key">{{ item }}</label>
+                    </div>
+                </div>
+
+                <div class="menu">
+                    <button @click="n">下一题</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
+
+<template id="right-catalog">
+    <div style="position: relative;">
+        <ul class="catalog">
+            <li v-for="(item,key) in path || catalog" :key="key" @click="enter(key)" :title="typeof item != 'string'? key: item">
+                <span v-if="typeof item != 'string'">
+                    <img src="/pc/img/dir.png" alt="dir">{{ key }}
+                </span>
+                <span v-else>
+                    <img src="/pc/img/file.png" alt="file">
+                    {{ item }}
+                </span>
+            </li>
+        </ul>
+        <div style="position: absolute;right: 15px;bottom: 10px;cursor: default">
+            <span style="color: #8080801f;">by ccheng</span>
+            <img src="/pc/img/back.png" alt="back" @click="back" style="height: 30px;cursor: pointer;">
+        </div>
+    </div>
+</template>
+
+<template id="right-analyze">
+    <div class="tips">
+        <div class="reduce">
+            已答 {{ this.reduce.sum.length }} 个：
+            <div class="success">正确个数: {{ this.reduce.success.length }}&emsp;( {{ Math.round(this.reduce.success.length / this.reduce.sum.length * 100) || 0 }}%    )</div>
+            <div class="error">错误个数: {{ this.reduce.error.length }}&emsp;( {{ Math.round(this.reduce.error.length / this.reduce.sum.length * 100) || 0 }}% )</div>
+            <div class="jump">跳过个数: {{ this.reduce.jump.length }}&emsp;( {{ Math.round(this.reduce.jump.length / this.reduce.sum.length * 100) || 0 }}% )</div>
+        </div>
+        小提示：<br>
+        它的所属分类是：{{ current.catalog || '获取失败了(+_+)?' }}<br>
+        <div class="tips" v-if="current.param">它的常用参数有{{ current.param.length }}个<br></div>
+        <div class="tips" v-if="current.link">和它具有相关联的有{{ current.link.length }}个</div>
+        <div v-if="hint">
+            <br />
+            正确答案是:
+            <div v-if="typeof current.issue.answer == 'object'">
+                <span v-for="item in current.issue.answer">{{ item }}、</span>
+            </div>
+            <div v-else>{{ current.issue.answer }}</div>
+        </div>
+        <div v-if="prev_st" :class="{'analyze':!isMobile}">
+            <br>
+            前题分析：<br>
+            {{ prev_st.catalog }}中的{{ prev_st.title }}：
+            <br>
+            <span v-html="prev_st.declare">{{ prev_st.declare }}</span><br>
+            <span v-if="prev_st.param"><br>
+                它有{{ prev_st.param.length }}个常用参数：
+                <span v-for="item in prev_st.param"><br>
+                    <span style="color: #ff5a5f">{{ item.param }}</span>:
+                    <span v-if="item.type">类型为{{ item.type }}。</span>
+                    {{ item.declare }}
+                </span>
+                <br>
+            </span>
+            <span v-if="prev_st.link"><br>
+                和它类似的有&nbsp;
+                <span v-for="item in prev_st.link">{{ item }}、</span>
+                <br>
+            </span>
+            <span v-if="prev_st.return"><br>
+                它的返回值为
+                <span v-if="prev_st.return.type"><span style="color: #ff5a5f">{{ prev_st.return.type }}类型</span>，</span>
+                {{ prev_st.return.declare }}
+                <br>
+            </span>
+        </div>
+    </div>
+</template>
+
+<script type="text/javascript">
+    let eventBus = new Vue;
+
+    new Vue({
+        el: "#app",
+        data: {
+            title: '永远相信，美好的事情即将发生',
+            page: {
+                left: 'index',
+                right: 'right-catalog',
+            },
+            s: null
+        },
+        methods: {
+            search() {
+                if (this.s) {
+                    window.open(`${location.origin}/search.html?s=` + new Base64().encode(JSON.stringify({'s':this.s})));
+                    this.s = '';
+                }
+            }
+        },
+        created() {
+            eventBus.$on('title', title => {
+                this.title = title;
+            });
+            eventBus.$on('page-left', pl =>{
+                this.page.left = pl;
+            });
+            eventBus.$on('page-right', pr =>{
+                this.page.right = pr;
+            });
+        },
+        components: {
+            'index': {
+                template: '#index',
+                data() {
+                    return {
+                        reduce: {},
+                        detail: null
+                    }
+                },
+                methods: {
+                    details(data) {
+                        this.detail = data;
+                        // console.log(this.detail);
+                    }
+                },
+                created() {
+                    req('/getReduce', {}, data => {
+                        this.reduce = data;
+                    });
+                }
+            },
+            // 主页
+            'home': {
+                template: '#home',
+                data() {
+                    return {
+                        // 导航
+                        nav: [],
+                        // 概览（包含所有测试题目）
+                        list: null,
+                        // 当前解析
+                        current: null,
+                        // 当前位置
+                        index: 0,
+                        // 输入的回答
+                        answer: [],
+                        // 当前提示
+                        hint: {text: null, success: false},
+                        // 标题
+                        title: '你的魔鬼来了哦',
+                    }
+                },
+                methods: {
+                    start() {
+                        req('/start/getTitle', {
+                            file: sessionStorage.getItem('file'),
+                        }, (data, d) => {
+                            this.title = d.msg;
+                        });
+                        req('/start/getst', {
+                            file: sessionStorage.getItem('file'),
+                            param: isMobile? 2: 1
+                        }, data => {
+                            this.list = data;
+                            this.n();
+                        });
+                    },
+                    // 进入下一题
+                    n() {
+                        let verify = false;
+
+                        if (!(verify = this.verify())){
+                            this.nav[this.index - 1].error = true;
+                            return false;
+                        }
+
+                        let next = this.list[this.index ++];
+
+                        if (this.nav[this.index - 2]){
+                            this.nav[this.index - 2].active = false;
+                            if (verify && !this.nav[this.index - 2].error && !this.nav[this.index - 2].jump) {
+                                this.nav[this.index - 2].success = true;
+                            }else {
+                                this.nav[this.index - 2].error = true;
+                            }
+                        }
+                        this.nav[this.index - 1] = {active: true, success: null, error: null, jump: null};
+
+                        if (next) {
+                            if (next.issue.type == 'checkbox') this.answer = [];
+                            else this.answer = null;
+
+                            this.current = next;
+
+                            eventBus.$emit('st_current', this.current, this.title);
+
+                            // 进度条位置变化
+                            let gress = document.querySelector('li.active').offsetLeft;
+                            if(this.$refs.progress && gress && this.$refs.progress.scrollLeft < gress) {
+                                let interval = setInterval(() => {
+                                    if (this.$refs.progress.scrollLeft < gress - 100)
+                                        this.$refs.progress.scrollLeft = gress - 50;
+                                    else if (this.$refs.progress.scrollLeft < gress)
+                                        this.$refs.progress.scrollLeft += 3;
+                                    else clearInterval(interval);
+                                }, 10);
+                                setTimeout(() => {
+                                    clearInterval(interval);
+                                }, 1000);
+                            }
+                        }else {
+                            // 完成汇总
+                            window.onbeforeunload = true;
+                            swal({
+                                title: "提示",
+                                text: "您已经完成了所有题目，您现在可以在右侧查看您的测试分析结果，此次练习记录已经保存ο(=•ω＜=)ρ⌒☆",
+                                buttons: {
+                                    cancel: true,
+                                    confirm: true,
+                                }
+                            })
+                            .then(res => {
+                                if (res) location.reload();
+                            });
+                        }
+                        return false;
+                    },
+                    verify() {
+                        if (this.index <= 0) return 1;
+                        if (this.answer) {
+                            switch (this.current.issue.type) {
+                                case 'text':
+                                case 'radio':
+                                    if (this.current.issue.answer == this.answer) {
+                                        eventBus.$emit('hint', '回答正确了\\(0^◇^0)/', 0, this.index);
+                                        return true;
+                                    }else {
+                                        eventBus.$emit('hint', '您的回答貌似不正确＞﹏＜', 2, this.index);
+                                    }
+                                    break;
+                                case 'checkbox':
+                                    if (this.answer.length == this.current.issue.answer.length) {
+                                        for (value of this.current.issue.answer) {
+                                            if (!this.answer.includes(value)) {
+                                                eventBus.$emit('hint', '你选择的答案不正确哦(ノへ￣、)', 2, this.index);
+                                                return false;
+                                            }
+                                        }
+                                        eventBus.$emit('hint', '你真棒ψ(._. )>', 0, this.index);
+                                        return true;
+                                    }else if (!this.answer.length) {
+                                        this.nav[this.index - 1].jump = true;
+                                        eventBus.$emit('hint', '您还没有作回答呢(●\'◡\'●)', 1, this.index);
+                                    }else {
+                                        eventBus.$emit('hint', '您勾选的答案数量都对不上呢(ง •_•)ง', 2, this.index);
+                                    }
+                                    break;
+                                default:
+                                    eventBus.$emit('hint', '这个类型有点奇怪，暂时没有办法解析呢o((⊙﹏⊙))o.');
+                            }
+                        }else {
+                            this.nav[this.index - 1].jump = true;
+                            eventBus.$emit('hint', '您还没有作回答呢(●\'◡\'●)', 1, this.index);
+                        }
+                        return false;
+                    },
+                    hintf(data, c) {
+                        this.hint.text = data;
+                        this.hint.success = c == 0;
+                    }
+                },
+                mounted() {
+                    this.start();
+                    eventBus.$on('getst', this.start);
+                    eventBus.$on('hint', this.hintf);
+                    // 进入状态吧
+                    window.onbeforeunload = false;
+                    // console.clear();
+                }
+            },
+            'right-analyze': {
+                template: '#right-analyze',
+                data() {
+                    return {
+                        // 和侧边是一样的，只显示一下不做改变
+                        current: null,
+                        prev_st: null,
+                        title: null,
+                        hint: false,
+                        index: -1,
+                        reduce: {success: [], error: [], jump: [], sum: []},
+                    }
+                },
+                methods: {
+                    stCurrent(data, title) {
+                        this.prev_st = this.current; // 对于上一题的分析，加强记忆
+                        this.current = data;
+                        this.title = title;
+                    },
+                    hintf(data, code, index) {
+                        this.hint = code != 0;
+                        if (code !== undefined && this.index != index) {
+                            this.index = index;
+                            if (this.hint) {
+                                if (code == 1) { // 跳过的
+                                    this.reduce.jump[this.reduce.jump.length] = this.current;
+                                    req('/reduce/' + verify, {
+                                        jump: JSON.stringify(this.current)
+                                    });
+                                }else if (code == 2) { // 答错的
+                                    this.reduce.error[this.reduce.error.length] = this.current;
+                                    req('/reduce/' + verify, {
+                                        error: JSON.stringify(this.current)
+                                    });
+                                }
+                            }else { // 回答正确的
+                                this.reduce.success[this.reduce.success.length] = this.current;
+                                req('/reduce/' + verify, {
+                                    success: JSON.stringify(this.current)
+                                });
+                            }
+                            this.reduce.sum[this.reduce.sum.length] = this.current;
+                            req('/reduce/' + verify, {
+                                sum: JSON.stringify(this.current)
+                            });
+                        }
+                    },
+                },
+                mounted() {
+                    eventBus.$on('st_current', this.stCurrent);
+                    eventBus.$on('hint', this.hintf);
+                }
+            },
+            'right-catalog': {
+                template: '#right-catalog',
+                data() {
+                    return {
+                        'catalog': null,
+                        'path': null,
+                    }
+                },
+                methods:{
+                    enter(key){
+                        let next = this.catalog[key];
+                        if (typeof next != 'string'){
+                            this.catalog = next;
+                        }else {
+                            sessionStorage.setItem('file', key);
+                            eventBus.$emit('title', '练习');
+                            eventBus.$emit('page-left', 'home');
+                            eventBus.$emit('page-right', 'right-analyze');
+                            eventBus.$emit('getst');
+                        }
+                    },
+                    back() {
+                        req('/filelist', {}, data => {
+                            this.catalog = data;
+                        });
+                    }
+                },
+                mounted() {
+                    this.back();
+                }
+            }
+        }
+    })
+</script>
+</html>

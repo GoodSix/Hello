@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>文档搜索结果</title>
+    <link rel="stylesheet" href="/pc/css/global.css">
+    <script src="/pc/js/vue.min.js"></script>
+    <script src="/pc/js/axios.min.js"></script>
+    <script src="/pc/js/encrypt.js"></script>
+    <script src="/pc/js/sweetalert.min.js"></script>
+    <script>
+        function search (keyword, func) {
+            axios.get(`/api.php/search/${keyword}`)
+            .then(res => {
+                if (res.data.err == 0) {
+                    func(res.data.data);
+                }else {
+                    swal('提示', res.data.msg, 'warning');
+                }
+            }).catch(err => {
+                swal('提示', err, 'error');
+            });
+        }
+    </script>
+</head>
+<body>
+
+</body>
+<script>
+    let keyword = ''
+    try {
+        keyword = JSON.parse(new Base64().decode(location.search.substr(3)))['s'];
+    }catch(e) {
+        keyword = location.search.substr(3);
+    }
+
+    if (keyword){
+        search(keyword, data => {
+            console.log(data);
+        });
+    }else {
+        location.href = '/';
+    }
+</script>
+</html>

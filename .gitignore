@@ -1,0 +1,9 @@
+/.idea
+/.vscode
+/.history
+*.http
+*.log
+package-lock.json
+**/runtime/*
+**/dist/*
+**/node_modules/*
