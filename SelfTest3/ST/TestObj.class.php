@@ -44,6 +44,15 @@ class TestObj extends Parse{
     }
 
     /**
+     * 根据ID获取分类的详细信息
+     * @param $id
+     * @return
+     */
+    public function getCatalogById($id) {
+        return $this ->catalog[$id];
+    }
+
+    /**
      * 解析ST文件
      * @param null $type 解析题目类型，1为文本，2为选择题，否则随机
      * @param null $index 获取指定下标处的数据, 为空表示获取所有数据
@@ -229,6 +238,15 @@ class TestObj extends Parse{
             'answer' => $issue['answer'] ?? '无法解析',     // 答案
         ];
         // halt($st);
+        $catalog = $this ->getCatalog($st['catalog']);
+        $st['catalog'] = [];
+        while($catalog !== null) {
+            $st['catalog'][] = $catalog;
+            if ($catalog['pid'] !== false)
+                $catalog = $this ->getCatalogById($catalog['pid']);
+            else $catalog = null;
+        }
+        $st['catalog'] = implode(' ->', array_reverse(array_column($st['catalog'], 'name')));
         return $st;
     }
 

@@ -46,13 +46,13 @@ abstract class Parse {
         $catalogs = Cache::get($this ->file_md5 . 'catalog');
         if (!$catalogs) {
             $catalog = [];
-            preg_match_all('/^\#+\s\w*/miu', $this->st, $catalog);
+            preg_match_all('/^\@?\#+\s\w*/miu', $this->st, $catalog);
             $catalogs = [];
             foreach (end($catalog) as $value) {
-                $catalogs[]['name'] = substr($value, stripos($value, ' ') + 1);
+                $catalogs[]['name'] = ($value[0] == '@'?'@':'') . substr($value, stripos($value, ' ') + 1);
                 $last_key = count($catalogs) - 1;
                 $catalogs[$last_key]['level'] = substr_count($value, '#');
-                $catalogs[$last_key]['pid'] = $catalogs[$last_key]['level'] == 1 ?true: (function () use($catalogs, $catalog, $last_key){
+                $catalogs[$last_key]['pid'] = $catalogs[$last_key]['level'] == 1 ?false: (function () use($catalogs, $catalog, $last_key){
                     $temp_catalog = $catalogs;
                     arsort($temp_catalog);
                     $current_level = $catalogs[$last_key]['level'];
