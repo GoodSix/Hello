@@ -214,9 +214,9 @@
             <div v-else>{{ current.issue.answer }}</div>
         </div>
         <div v-if="prev_st" :class="{'analyze':!isMobile}">
-            <br>
+            <hr style="border-bottom: 1px solid #ff5a5f7a;margin: 20px 3px 10px;">
             前题分析：<br>
-            {{ prev_st.catalog }}中的{{ prev_st.title }}：
+            {{ prev_st.catalog }} 中的 {{ prev_st.title }}：
             <br>
             <span v-html="prev_st.declare">{{ prev_st.declare }}</span><br>
             <span v-if="prev_st.param"><br>
