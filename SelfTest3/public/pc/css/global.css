@@ -7,6 +7,10 @@
     outline: none;
 }
 
+body {
+    cursor: default;
+}
+
 ::-webkit-scrollbar {
     width: 5px;
     height: 0px;
@@ -113,7 +117,7 @@ keep-live > div {
 }
 
 /* .catalog { */
-    /* padding-left: 10px; */
+/* padding-left: 10px; */
 /* } */
 
 .catalog li img {
