@@ -111,7 +111,7 @@
             您在
             <div class="record" v-for="item,key in reduce" :key="key" style="margin-bottom: 10px;">
                 &emsp;&emsp;{{ item.time }}
-                <span style="cursor: pointer" @click="details(item.data.sum)">做了{{ item.data.sum?item.data.sum.length: 0 }}个题目</span>，
+                <span style="cursor: pointer" @click="details(item.data.sum)">做了{{ (item.data.success? item.data.success.length: 0) + (item.data.error? item.data.error.length: 0) + (item.data.jump? item.data.jump.length: 0) }}个题目</span>，
                 <span style="cursor: pointer" @click="details(item.data.success)" class="success">正确{{ item.data.success? item.data.success.length: 0 }}个</span>，
                 <span style="cursor: pointer" @click="details(item.data.error)" class="error">错了{{ item.data.error? item.data.error.length: 0 }}个</span>，
                 <span style="cursor: pointer" @click="details(item.data.jump)" class="jump">跳过了{{ item.data.jump? item.data.jump.length: 0 }}个</span>。
@@ -487,9 +487,6 @@
                                 });
                             }
                             this.reduce.sum[this.reduce.sum.length] = this.current;
-                            req('/reduce/' + verify, {
-                                sum: JSON.stringify(this.current)
-                            });
                         }
                     },
                 },
