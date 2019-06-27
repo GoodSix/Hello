@@ -106,10 +106,12 @@ class H_App {
                 $data[$last_key]['time'] = date('Y-m-d H:i', filemtime($file)); // 结束做题时间
                 // $data[$readdir]['duration'] = (filemtime($r) - filectime($r)) / 60; // 做题耗时
             }
-
         }
         closedir($opendir);
         if (count($data)) {
+	    $times = array_column($data, 'time');
+	    $data = array_combine($times, $data);
+	    krsort($data);
             return resp($data);
         }
         return resp('没有记录', null, 0);
