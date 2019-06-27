@@ -249,24 +249,6 @@ keep-live > div {
     color: #c0bec6;
 }
 
-.record > div {
-    display: none;
-}
-
-.record:hover > div {
-    display: block;
-}
-
-/*.st > .progress > li:first-of-type, .st > .progress > li:last-of-type {
-    position: fixed;
-    background-color: #ff5a5f;
-}
-
-.st > .progress > li:first-of-type{
-    left: 0px;
-    top: 0px;
-}*/
-
 .st > .progress > li.active {
     background-color: #ffe93e !important;
 }

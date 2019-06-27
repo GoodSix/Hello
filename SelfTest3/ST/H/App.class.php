@@ -86,37 +86,23 @@ class H_App {
         if ($opendir) {
             while ($readdir = readdir($opendir)) { // 读取第一层IP数据
                 if ($readdir == '.' || $readdir == '..') continue;
-                $read_dir = $reduce_path . DS . $readdir;
-                $od = opendir($read_dir);
-                while ($rd = readdir($od)) { // 读取IP下的每一次认证后的数据
-                    if ($rd == '.' || $rd == '..') continue;
-                    $r = $read_dir . DS . $rd;
-                    $readdir = str_replace('_', '.', $readdir); // TODO:: IP处理
-                    $data[$readdir][$rd]['data'] = @json_decode(file_get_contents($r), true) ?? [];
-                    // 把子数据转成数组
-                    foreach ($data[$readdir][$rd]['data'] as $k =>$v) {
-                        foreach ($v as $key =>$value) {
-                            $data[$readdir][$rd]['data'][$k][$key] = @json_decode($value) ?? $value;
-                        }
+                $file = $reduce_path . DS . $readdir;
+                $last_key = count($data);
+                $data[$last_key]['data'] = @json_decode(file_get_contents($file), true) ?? [];
+                // 把子数据转成数组
+                foreach ($data[$last_key]['data'] as $k =>$v) {
+                    foreach ($v as $key =>$value) {
+                        $data[$last_key]['data'][$k][$key] = @json_decode($value) ?? $value;
                     }
-                    // 更多的相关数据
-                    $data[$readdir][$rd]['time'] = date('Y-m-d H:i', filemtime($r)); // 结束做题时间
-                    // $data[$readdir][$rd]['duration'] = (filemtime($r) - filectime($r)) / 60; // 做题耗时
                 }
-                @closedir($od);
-                $keys = array_column($data[$readdir], 'time');
-                $keys = array_map(function ($item) {
-                    return strtotime($item);
-                }, $keys);
-                // halt($keys);
-                $data[$readdir] = array_combine($keys, $data[$readdir]);
-                ksort($data[$readdir]);
-                $data[$readdir] = array_reverse($data[$readdir]);
+                // 更多的相关数据
+                $data[$last_key]['time'] = date('Y-m-d H:i', filemtime($file)); // 结束做题时间
+                // $data[$readdir]['duration'] = (filemtime($r) - filectime($r)) / 60; // 做题耗时
             }
-        }
-        @closedir($opendir);
-        if (count($data)) {
 
+        }
+        closedir($opendir);
+        if (count($data)) {
             return resp($data);
         }
         return resp('没有记录', null, 0);
@@ -130,7 +116,7 @@ class H_App {
      */
     public function reduce($verify) {
         if ($verify) {
-            $reduce_path = RUNTIME_PATH . DS . 'reduce' . DS . str_replace('.', '_', $_SERVER['REMOTE_ADDR']);
+            $reduce_path = RUNTIME_PATH . DS . 'reduce';
             if (!file_exists($reduce_path)) mkdir($reduce_path, 0777, true);
             if (!file_exists($reduce_path)) return resp('无法生成记录文件，可能是服务器端没有权限进行记录，请前往检查', null, 1010);
             $reduce_path .= DS . $verify;
