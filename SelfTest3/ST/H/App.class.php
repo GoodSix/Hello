@@ -7,6 +7,17 @@ class H_App {
 
     private $index;
 
+    protected $path;
+
+    public function __construct() {
+        if (strtolower(PHP_OS) == 'linux') {
+            $this ->path = '/home/wwwroot/default/data/User/admin/home/ST';
+        }else {
+            // Windows下做测试用
+            $this ->path = dirname(ROOT_PATH) . DS . 'ST';
+        }
+    }
+
     public function verify($except) {
         if (array_search($this ->action, $except) === false) {
             $rt = $_SERVER['HTTP_TOKEN'] ?? null;
@@ -26,12 +37,8 @@ class H_App {
      * @throws E
      */
     public function fileList() {
-        if (strtolower(PHP_OS) == 'linux') {
-            $path = '/home/wwwroot/default/data/User/admin/home/ST';
-        }else {
-            // Windows下做测试用
-            $path = dirname(ROOT_PATH) . DS . 'ST';
-        }
+        $path = $this ->path;
+
         $file_list = LoadFile::getList($path);
         $arr = [];
         $i = 0;
@@ -130,7 +137,14 @@ class H_App {
         }
     }
 
-    public function search ($keyword) {
-        return resp('来自后端的响应: 由于数据不是很多，等待资料完善后方可使用该功能。（当前搜索关键字为: ' . $keyword . ')', null, 1);
+    public function search ($keyword = null) {
+        $result = [];
+        foreach (LoadFile::getList($this ->path) as $val) {
+            $to = new TestObj($val);
+            // TODO:: 搜索待续
+        }
+        if (count($result)) {
+            return resp($to);
+        }else return resp('搜索结果为空', null, 1);
     }
 }

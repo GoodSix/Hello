@@ -54,28 +54,34 @@ class TestObj extends Parse{
 
     /**
      * 解析ST文件
-     * @param null $type 解析题目类型，1为文本，2为选择题，否则随机
+     * @param null $type 解析题目类型，1为文本，2为选择题，不解析
      * @param null $index 获取指定下标处的数据, 为空表示获取所有数据
      * @return array
      */
     public function getSt($type = null, $index = null) {
-        switch ($type) {
-            case 1:
-                $type = ['text'];
-                break;
-            case 2:
-                $type = ['radio', 'radio', 'radio', 'radio', 'checkbox']; // 降低多选题几率，多选题中相关联提问几率会更低
-                break;
-            default:
-                $type = ['text', 'radio', 'checkbox'];
-        }
-        if ($index !== null) {
-            return $this->parseIssue($this ->st[$index] ?? [], $type[!shuffle($type)]);
-        }else{
-            shuffle($this ->st);
-            return array_map(function ($item) use(&$type) {
-                return $this ->parseIssue($item, $type[!shuffle($type)]);
-            }, $this ->st);
+        if ($type){
+            switch ($type) {
+                case 1:
+                    $type = ['text'];
+                    break;
+                case 2:
+                    $type = ['radio', 'radio', 'radio', 'radio', 'checkbox']; // 降低多选题几率，多选题中相关联提问几率会更低
+                    break;
+                default:
+                    $type = ['text', 'radio', 'checkbox'];
+            }
+            if ($index !== null) {
+                return $this->parseIssue($this ->st[$index] ?? [], $type[!shuffle($type)]);
+            }else{
+                shuffle($this ->st);
+                return array_map(function ($item) use(&$type) {
+                    return $this ->parseIssue($item, $type[!shuffle($type)]);
+                }, $this ->st);
+            }
+        }else {
+            if ($index) {
+                return $this ->st[$index]?? null;
+            }else return $this ->st;
         }
     }
 

@@ -74,11 +74,11 @@
 <body>
 <div id="app">
     <div v-if="!isMobile" class="nav">
-        <div>{{ title }}</div>
+        <div onclick="location.reload()">{{ title }}</div>
         <input type="text" placeholder="文件/笔记" @keypress.enter="search" v-model="s">
     </div>
     <div v-else>
-        <div style="color: white;">永远相信，美好的事情即将发生</div>
+        <div style="color: white;" ondblclick="location.reload()">永远相信，美好的事情即将发生</div>
     </div>
 
     <keep-live class="left">
@@ -107,7 +107,7 @@
         </div>
         <span v-if="!detail">欢迎回来😘</span>
         <br>
-        <span v-if="reduce" >
+        <span v-if="reduce && !detail" >
             您在
             <div class="record" v-for="item,key in reduce" :key="key" style="margin-bottom: 10px;">
                 &emsp;&emsp;{{ item.time }}
@@ -117,7 +117,7 @@
                 <span style="cursor: pointer" @click="details(item.data.jump)" class="jump">跳过了{{ item.data.jump? item.data.jump.length: 0 }}个</span>。
             </div>
         </span>
-        <span v-else>我爱学习，学习使我快乐</span>
+        <span v-else-if="!detail">我爱学习，学习使我快乐</span>
     </div>
 </template>
 
