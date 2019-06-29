@@ -107,7 +107,7 @@ class H_App {
                 // $data[$readdir]['duration'] = (filemtime($r) - filectime($r)) / 60; // 做题耗时
             }
         }
-        closedir($opendir);
+        @closedir($opendir);
         if (count($data)) {
 	    $times = array_column($data, 'time');
 	    $data = array_combine($times, $data);
