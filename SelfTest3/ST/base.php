@@ -7,7 +7,7 @@ define('ST_PATH', ROOT_PATH . DS . 'ST');
 define('RUNTIME_PATH', ROOT_PATH . DS . 'runtime');
 if (!file_exists(RUNTIME_PATH)) mkdir(RUNTIME_PATH, 0777, false);
 // 兼容配置
-define('ST_EXT', 'st');
+define('ST_EXT', 'txt');
 define('SCRIPT_EXT', 'class.php');
 define('WEB_EOL', '<br />');    // web下详情的换行方式
 
