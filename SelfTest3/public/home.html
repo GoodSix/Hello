@@ -138,7 +138,7 @@
             <!--{{ current }}-->
             <!-- 设计是有个这东西，那就来一个吧 -->
             <div class="title">
-                {{ current.catalog || '分类获取失败' }} 中
+                {{ current.catalog || '分类获取失败' }}
             </div>
             <div class="issue" v-html="current.issue.issue || '内容获取失败，请检查对应的st文件'"></div>
             <div :class="{'hint': true, 'success': hint.success}">
