@@ -18,7 +18,7 @@ abstract class Parse {
             throw new E('这可能不是一个有效的文件夹');
         $this ->st = $st;
         // 罪恶的换行符，全部为\n吧！！！
-        $this ->st = str_ireplace("\n\r", SYS_EOL);
+        $this ->st = str_ireplace("\n\r", SYS_EOL, $this ->st);
     }
 
     /**
