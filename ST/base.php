@@ -10,11 +10,12 @@ if (!file_exists(RUNTIME_PATH)) mkdir(RUNTIME_PATH, 0777, false);
 define('ST_EXT', 'txt');
 define('SCRIPT_EXT', 'class.php');
 define('WEB_EOL', '。&emsp;');    // web下详情的换行方式
+define('SYS_EOL', "\n");
 
 // 异常处理
 set_exception_handler(function ($err) {
     if (isset($argc)) {
-        $eol = PHP_EOL;
+        $eol = SYS_EOL;
         echo 'In file ' . $err ->getFile() . ':' . $err ->getLine() . " throw: {$eol}" . $err ->getMessage() . $eol;
     }else {
         echo json([

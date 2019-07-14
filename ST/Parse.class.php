@@ -14,9 +14,11 @@ abstract class Parse {
             $st = LoadFile::getList($st)[0];
             $this ->file_md5 = md5_file($st);
             $st = file_get_contents($st);
-        }elseif (strpos($st, PHP_EOL) === false)
+        }elseif (strpos($st, SYS_EOL) === false)
             throw new E('这可能不是一个有效的文件夹');
         $this ->st = $st;
+        // 罪恶的换行符，全部为\n吧！！！
+        $this ->st = str_ireplace("\n\r", SYS_EOL);
     }
 
     /**
@@ -27,7 +29,7 @@ abstract class Parse {
         $title = Cache::get($this ->file_md5 . 'title');
         if (!$title) {
             $title = [];
-            $arr = explode(PHP_EOL, $this->st);
+            $arr = explode(SYS_EOL, $this->st);
             for ($i = 0; $i < 10; $i++) {
                 if (preg_match('/^\~\s(.*?)\s\~$/', trim($arr[$i] ?? ''), $title)){
                     $title = end($title);
@@ -93,7 +95,7 @@ abstract class Parse {
         $st = Cache::get($this ->file_md5 . 'st');
         if (!$st) {
             $st = [];
-            $arr = explode(PHP_EOL, $this ->st);
+            $arr = explode(SYS_EOL, $this ->st);
             $last_key = 0;
             $catalog = '';
             while(($item = next($arr)) !== false) {
@@ -121,7 +123,7 @@ abstract class Parse {
                     $st[$last_key - 1]['return']['declare'] = trim($temp[2]);
                 }elseif (preg_match('/^[^#@`]\s{7}\+\s(.*)/', $item, $temp)) { // 匹配介绍
                     if (!array_key_exists('declare', $st[$last_key - 1])) $st[$last_key - 1]['declare'] = '';
-                    $eol = array_key_exists('argc', $_SERVER)? PHP_EOL: WEB_EOL;
+                    $eol = array_key_exists('argc', $_SERVER)? SYS_EOL: WEB_EOL;
                     if (!$st[$last_key - 1]['declare']) $eol = ''; // 我是谁，我在哪，我在干什么？这句代码有什么用？？？为毛没事了？？？？?
                     $st[$last_key - 1]['declare'] = trim($st[$last_key - 1]['declare']) . $eol . trim($temp[1]);
                 }elseif (preg_match('/^[^#@`]\s{7}\@\s(.*)$/', $item, $temp)) { // 匹配关联
