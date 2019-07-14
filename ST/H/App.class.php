@@ -11,12 +11,12 @@ class H_App {
 
     public function __construct() {
         if (strtolower(PHP_OS) == 'linux') {
-            $this ->path[] = '/home/wwwroot/default/data/User/admin/home/ST';
-            $this ->path[] = '/home/ccheng/ST';
+            // $this ->path[] = '/home/wwwroot/default/data/User/admin/home/ST';
+            $this ->path = '/home/ccheng/ST';
         }else {
             // Windows下做测试用
-            $this ->path[] = ROOT_PATH . DIRECTORY_SEPARATOR . 'ST_TEST';
-            $this ->path[] = ROOT_PATH . DIRECTORY_SEPARATOR . 'ST_TEST';
+            // $this ->path[] = ROOT_PATH . DIRECTORY_SEPARATOR . 'ST_TEST';
+            $this ->path = ROOT_PATH . DIRECTORY_SEPARATOR . 'ST_TEST';
         }
     }
 
