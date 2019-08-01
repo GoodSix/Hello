@@ -1,3 +1,8 @@
+@font-face {
+    font-family: 'ccheng';
+    src: url('/pc/font/zhuziAwan.ttf');
+}
+
 * {
     margin: 0px;
     border: 0px;
@@ -5,6 +10,7 @@
     list-style-type: none;
     font-size: 14px;
     outline: none;
+    font-family: 'ccheng', '幼圆', '微软雅黑';
 }
 
 body {
