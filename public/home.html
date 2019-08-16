@@ -112,13 +112,13 @@
         <span v-if="!detail">欢迎回来😘</span>
         <br>
         <span v-if="reduce && !detail" >
-            您在
-            <div class="record" v-for="item,key in reduce" :key="key" style="margin-bottom: 10px;">
-                &emsp;&emsp;{{ item.time }}
+            您在 <div class="record" v-for="item,key in reduce" :key="key" style="margin-bottom: 10px;">
+                {{ item.time }}
                 <span style="cursor: pointer" @click="details(item.data.sum)">做了{{ (item.data.success? item.data.success.length: 0) + (item.data.error? item.data.error.length: 0) + (item.data.jump? item.data.jump.length: 0) }}个题目</span>，
                 <span style="cursor: pointer" @click="details(item.data.success)" class="success">正确{{ item.data.success? item.data.success.length: 0 }}个</span>，
                 <span style="cursor: pointer" @click="details(item.data.error)" class="error">错了{{ item.data.error? item.data.error.length: 0 }}个</span>，
                 <span style="cursor: pointer" @click="details(item.data.jump)" class="jump">跳过了{{ item.data.jump? item.data.jump.length: 0 }}个</span>。
+                <br>
             </div>
         </span>
         <span v-else-if="!detail">我爱学习，学习使我快乐</span>
