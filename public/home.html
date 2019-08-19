@@ -19,7 +19,8 @@
             isMobile = isIphone || isAndroid;
 
 
-        document.onselectstart = () => false;
+        // document.onselectstart = () => false;
+        window.onbeforeunload = () => false;
 
         axios.defaults.headers.common['x_requested_with'] = 'XMLHttpRequest';
 
@@ -69,7 +70,7 @@
         
         let verify = randomString();
 
-	if (isMobile) {
+	if (!isMobile) {
 		document.body.css.fontFamily = '微软雅黑';
 	}
     </script>
