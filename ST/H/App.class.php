@@ -10,7 +10,7 @@ class H_App {
     protected $path;
 
     public function __construct() {
-        if (strtolower(PHP_OS) == 'linux') {
+        if (strtolower(PHP_OS) == 'linux' && false) {
             // $this ->path[] = '/home/wwwroot/default/data/User/admin/home/ST';
             $this ->path = '/home/ccheng/ST';
         }else {
