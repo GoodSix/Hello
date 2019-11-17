@@ -353,3 +353,39 @@ keep-live > div {
     border-radius: 3px;
     cursor: pointer;
 }
+
+#upload_file {
+    display: none;
+}
+
+#upload_file + label {
+    transition: all .3s;
+    float: right;
+    position: relative;
+    right: 6vw;
+    cursor: pointer;
+    color: #ff5a5f;
+    filter: blur(10px);
+}
+
+#upload_file + label:hover {
+    transition: all .4s;
+    color: white;
+    filter: unset;
+}
+
+
+.download {
+    color: #ff5a5f;
+    opacity: 0;
+    float: right;
+    cursor: copy;
+    text-decoration: none;
+    font-weight: bold;
+    transition: all .3s;
+}
+
+.download:hover {
+    opacity: 1;
+    transition: all .3s;
+}

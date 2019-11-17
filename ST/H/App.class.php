@@ -10,14 +10,15 @@ class H_App {
     protected $path;
 
     public function __construct() {
-        if (strtolower(PHP_OS) == 'linux' && false) {
+        /*if (strtolower(PHP_OS) == 'linux' && false) {
             // $this ->path[] = '/home/wwwroot/default/data/User/admin/home/ST';
             $this ->path = '/home/ccheng/ST';
         }else {
             // Windows下做测试用
             // $this ->path[] = ROOT_PATH . DIRECTORY_SEPARATOR . 'ST_TEST';
             $this ->path = ROOT_PATH . DIRECTORY_SEPARATOR . 'ST_TEST';
-        }
+        }*/
+        $this ->path = ROOT_PATH . DS . 'ST_TEST';
     }
 
     public function verify($except) {
@@ -31,6 +32,26 @@ class H_App {
                 die;
             }
         }
+    }
+
+    // 在PC端上传
+    public function upload_file() {
+        if (isset($_FILES['filename'])) {
+            $file = $_FILES['filename'];
+            if (!$file['error'] && is_uploaded_file($file['tmp_name'])) {
+                if ($file['type'] == 'text/plain' && pathinfo($file['name'], PATHINFO_EXTENSION) == 'txt') {
+                    $upload_file = ROOT_PATH . DS . 'ST_TEST' . DS . str_replace('_', DS , $file['name']);
+                    if (!file_exists(dirname($upload_file))) mkdir(dirname($upload_file), 0777, true);
+                    if (move_uploaded_file($file['tmp_name'], $upload_file)) {
+                        return resp('上传完成');
+                    }
+                    return resp('文件写入失败', 20191118120);
+                }
+                return resp('文件不符合规则', 20191118115);
+            }
+            return resp('上传时遇到了一些问题' . $file['error'], 20191118114);
+        }
+        return resp('上传文件名不合法', 20191118110);
     }
 
     /**
@@ -72,7 +93,7 @@ class H_App {
             // 尝试根据语法获取标题，如果获取不到则使用文件名用作标题
             $title = (new TestObj($value)) ->getTitle();
             if (!is_string($title)) $title = pathinfo($value, PATHINFO_FILENAME);
-            // 这代码还能继续下去，我认为是有点屎尿了
+            $title .= '-/download/' . rtrim(base64_encode(str_replace([ROOT_PATH, '\\'], ['', '/'], $value)), '=');
             // 数据生成
             eval("\$arr[{$p}][$i] = '$title';");
 
@@ -102,6 +123,20 @@ class H_App {
         }else {
             return resp('找不到该文件', null, 1006);
         }
+    }
+
+    public function download($file) {
+        if ($file = base64_decode($file . '=')) {
+            $file = ROOT_PATH . $file;
+            Header("Content-type: application/octet-stream");
+            Header("Accept-Ranges: bytes");
+            Header("Accept-Length:" . filesize($file));
+            Header("Content-Length:" . filesize($file));
+            Header("Content-Disposition: attachment; filename=" . basename($file));
+            readfile($file);
+            die();
+        }
+        return resp('暂时无法下载哦', 20191118206);
     }
 
     /**

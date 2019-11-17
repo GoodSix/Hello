@@ -10,6 +10,7 @@
     <script type="text/javascript" src="/pc/js/axios.min.js"></script>
     <script type="text/javascript" src="/pc/js/sweetalert.min.js"></script>
     <script type="text/javascript" src="/pc/js/encrypt.js"></script>
+    <script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js"></script>
 
     <script type="text/javascript">
         let ua = navigator.userAgent;
@@ -20,7 +21,7 @@
 
 
         // document.onselectstart = () => false;
-        window.onbeforeunload = () => false;
+        // window.onbeforeunload = () => false;
 
         axios.defaults.headers.common['x_requested_with'] = 'XMLHttpRequest';
 
@@ -71,7 +72,7 @@
         let verify = randomString();
 
 	if (!isMobile) {
-		document.body.css.fontFamily = '微软雅黑';
+        document.body.style.fontFamily = '微软雅黑';
 	}
     </script>
 </head>
@@ -80,7 +81,10 @@
 <div id="app">
     <div v-if="!isMobile" class="nav">
         <div onclick="location.reload()">{{ title }}</div>
-        <input type="text" placeholder="文件/笔记" @keypress.enter="search" v-model="s">
+        <!--<input type="text" placeholder="文件/笔记" @keypress.enter="search" v-model="s">-->
+
+        <input id="upload_file" type="file" @change="upload_file">
+        <label for="upload_file"><div>上传</div></label>
     </div>
     <div v-else>
         <div style="color: white;" ondblclick="location.reload()">永远相信，美好的事情即将发生</div>
@@ -141,7 +145,6 @@
         <!-- 答题区域 -->
         <div class="area">
             <!--{{ current }}-->
-            <!-- 设计是有个这东西，那就来一个吧 -->
             <div class="title">
                 {{ current.catalog || '分类获取失败' }}
             </div>
@@ -181,13 +184,14 @@
 <template id="right-catalog">
     <div style="position: relative;">
         <ul class="catalog">
-            <li v-for="(item,key) in path || catalog" :key="key" @click="enter(key)" :title="typeof item != 'string'? key: item">
+            <li v-for="(item,key) in path || catalog" :key="key" @click="enter(key)" :title="typeof item != 'string'? key: item.split('-')[0]">
                 <span v-if="typeof item != 'string'">
                     <img src="/pc/img/dir.png" alt="dir">{{ key }}
                 </span>
                 <span v-else>
                     <img src="/pc/img/file.png" alt="file">
-                    {{ item }}
+                    {{ item.split('-')[0] }}
+                    <!--<a @click.stop="" :href="" target="_blank" title="download" class="download">↓</a>-->
                 </span>
             </li>
         </ul>
@@ -263,6 +267,21 @@
                     window.open(`${location.origin}/search.html?s=` + new Base64().encode(JSON.stringify({'s':this.s})));
                     this.s = '';
                 }
+            },
+            upload_file(event) {
+                let form_data = new FormData();
+                form_data.append('filename', event.target.files[0]);
+                $.ajax({
+                    url: '/api.php/upload_file',
+                    type: 'POST',
+                    data: form_data,
+                    processData: false,
+                    contentType: false,
+                    success(res) {
+                        alert(res.msg + res.err);
+                        location.reload();
+                    }
+                })
             }
         },
         created() {
@@ -442,7 +461,7 @@
                     eventBus.$on('getst', this.start);
                     eventBus.$on('hint', this.hintf);
                     // 进入状态吧
-                    window.onbeforeunload = false;
+                    // window.onbeforeunload = false;
                     // console.clear();
                 }
             },
