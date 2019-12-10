@@ -5,6 +5,7 @@
     list-style-type: none;
     font-size: 14px;
     outline: none;
+    transition: all .5s;
 }
 
 body {
@@ -388,4 +389,14 @@ keep-live > div {
 .download:hover {
     opacity: 1;
     transition: all .3s;
+}
+
+@media only all and (max-width: 1200px) {
+    .left > div {
+        width: 88vw;
+    }
+
+    .right > div {
+        display: none;
+    }
 }
