@@ -1,4 +1,5 @@
 <?php
+/**
 if (isset($_POST['verify'])) {
     switch ($_POST['verify']) {
         case 'lalala':
@@ -16,7 +17,9 @@ if (isset($_POST['verify'])) {
             echo file_get_contents('verify.html');
     }
 }else if (isset($_COOKIE['Hello']) && $_COOKIE['Hello'] == 'World') {
-    echo file_get_contents('home.html');
+    readfile('home.html');
 }else {
-    echo file_get_contents('verify.html');
+    readfile('verify.html');
 }
+*/
+readfile('home.html');
