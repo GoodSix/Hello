@@ -1,3 +1,8 @@
+使用docker快速配置
+```shell
+git clone https://github.com/eoogo/Hello && docker run -itd -v `pwd`/Hello/:/var/www/ -p 80:80 --restart always --name hello eoogo/devt /bin/bash devt-init
+```
+
 ```
 ~ 标题声明 ~
 详情介绍，不会被读取
