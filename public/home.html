@@ -4,12 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="user-scalable=0">
     <title></title>
-    <link rel="stylesheet" href="/pc/css/global.css">
+    <link rel="stylesheet" href="/resource/css/global.css">
     <link rel="icon" href="/favicon.gif">
-    <script type="text/javascript" src="/pc/js/vue.min.js"></script>
-    <script type="text/javascript" src="/pc/js/axios.min.js"></script>
-    <script type="text/javascript" src="/pc/js/sweetalert.min.js"></script>
-    <script type="text/javascript" src="/pc/js/encrypt.js"></script>
+    <script type="text/javascript" src="/resource/js/vue.min.js"></script>
+    <script type="text/javascript" src="/resource/js/axios.min.js"></script>
+    <script type="text/javascript" src="/resource/js/sweetalert.min.js"></script>
+    <script type="text/javascript" src="/resource/js/encrypt.js"></script>
     <script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js"></script>
 
     <script type="text/javascript">
@@ -20,8 +20,9 @@
             isMobile = isIphone || isAndroid;
 
 
-        // document.onselectstart = () => false;
+        document.onselectstart = () => false;
         // window.onbeforeunload = () => false;
+        window.oncontextmenu = () => false;
 
         axios.defaults.headers.common['x_requested_with'] = 'XMLHttpRequest';
 
@@ -84,7 +85,7 @@
         <!--<input type="text" placeholder="文件/笔记" @keypress.enter="search" v-model="s">-->
 
         <input id="upload_file" type="file" @change="upload_file">
-        <label for="upload_file"><div>上传</div></label>
+        <label for="upload_file"><div title="上传一个文件到服务端，文件的规范请点击下方“文件规范”按钮查看">上传</div></label>
     </div>
     <div v-else>
         <div style="color: white;" ondblclick="location.reload()">永远相信，美好的事情即将发生</div>
@@ -97,7 +98,7 @@
         <component :is="page.right"></component>
     </keep-live>
 
-    <img style="display: none" src="/pc/img/file.png" alt="预加载图标">
+    <img style="display: none" src="/resource/img/file.png" alt="预加载图标">
 </div>
 </body>
 
@@ -105,7 +106,7 @@
     <div class="reduce">
         <!--{{ reduce }}-->
         <div class="detail">
-            <img v-if="detail" @click="detail = null" src="/pc/img/back.png" alt="back" style="height: 25px;cursor: pointer;position: fixed">
+            <img v-if="detail" title="刷新列表" @click="detail = null" src="/resource/img/back.png" alt="back" style="height: 25px;cursor: pointer;position: fixed">
             <div v-for="item in detail">
                 <span v-html="item.issue.issue"></span>&emsp;
                 <span style="color: grey" v-if="typeof item.issue.answer == 'object'">
@@ -133,7 +134,7 @@
 <template id="home">
     <div class="st">
         <div class="title">{{ title }}</div>
-        <ul class="progress" ref="progress">
+        <ul class="progress" ref="progress" title="PC滑动先按住shift" >
             <!--<li @click="tab"> < </li>-->
 
             <li v-for="(item, key) in list" :key="key" v-if="item.issue" :title="item.issue.issue" :class="nav[key]">
@@ -146,7 +147,7 @@
         <div class="area">
             <!--{{ current }}-->
             <div class="title">
-                {{ current.catalog || '分类获取失败' }}
+                {{ current.catalog || '' }}
             </div>
             <div class="issue" v-html="current.issue.issue || '内容获取失败，请检查对应的st文件'"></div>
             <div :class="{'hint': true, 'success': hint.success}">
@@ -186,18 +187,18 @@
         <ul class="catalog">
             <li v-for="(item,key) in path || catalog" :key="key" @click="enter(key)" :title="typeof item != 'string'? key: item.split('-')[0]">
                 <span v-if="typeof item != 'string'">
-                    <img src="/pc/img/dir.png" alt="dir">{{ key }}
+                    <img src="/resource/img/dir.png" alt="dir">{{ key }}
                 </span>
                 <span v-else>
-                    <img src="/pc/img/file.png" alt="file">
+                    <img src="/resource/img/file.png" alt="file">
                     {{ item.split('-')[0] }}
-                    <!--<a @click.stop="" :href="" target="_blank" title="download" class="download">↓</a>-->
+                    <a onclick="event.stopPropagation();" :href="'/api.php' + item.split('-')[1]" target="_blank" title="将服务端的文件下载到本地，下载后可重新编辑上传" class="download">↓</a>
                 </span>
             </li>
         </ul>
         <div style="position: absolute;right: 15px;bottom: 10px;cursor: default">
-            <span style="color: #8080801f;">by ccheng</span>
-            <img src="/pc/img/back.png" alt="back" @click="back" style="height: 30px;cursor: pointer;">
+            <span style="color: #ff5a50aa;cursor:pointer;" onclick="window.open('https://github.com/eoogo/Hello/blob/master/README.md')">新增文件规则</span>
+            <img src="/resource/img/back.png" alt="back" @click="back" style="height: 30px;cursor: pointer;">
         </div>
     </div>
 </template>
@@ -249,6 +250,12 @@
 </template>
 
 <script type="text/javascript">
+    // ~function r(){
+    //     console.clear();
+    //     debugger
+    //     requestAnimationFrame(r);
+    // }()
+
     let eventBus = new Vue;
 
     new Vue({
@@ -374,7 +381,7 @@
                         this.nav[this.index - 1] = {active: true, success: null, error: null, jump: null};
 
                         if (next) {
-                            if (next.issue.type == 'checkbox') this.answer = [];
+                            if (next.issue && next.issue.type == 'checkbox') this.answer = [];
                             else this.answer = null;
 
                             this.current = next;

@@ -16,9 +16,7 @@ abstract class Parse {
             $st = file_get_contents($st);
         }elseif (strpos($st, SYS_EOL) === false)
             throw new E('这可能不是一个有效的文件夹');
-        $this ->st = $st;
-        // 罪恶的换行符，全部为\n吧！！！
-        $this ->st = str_ireplace("\n\r", SYS_EOL, $this ->st);
+        $this ->st = str_replace("\r\n", SYS_EOL, str_replace("\n\n", "\n", $st));
     }
 
     /**

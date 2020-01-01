@@ -8,7 +8,13 @@
     transition: all .5s;
 }
 
+@font-face {
+    font-family: zhuziAwan;
+    src: url("/resource/font/zhuziAwan.ttf");
+}
+
 body {
+    font-family: zhuziAwan;
     cursor: default;
 }
 
@@ -365,8 +371,7 @@ keep-live > div {
     position: relative;
     right: 6vw;
     cursor: pointer;
-    color: #ff5a5f;
-    filter: blur(10px);
+    color: white;
 }
 
 #upload_file + label:hover {
@@ -391,7 +396,7 @@ keep-live > div {
     transition: all .3s;
 }
 
-@media only all and (max-width: 1200px) {
+@media only all and (max-width: 950px) {
     .left > div {
         width: 88vw;
     }
