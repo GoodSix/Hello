@@ -127,14 +127,15 @@ class H_App {
 
     public function download($file) {
         if ($file = base64_decode($file . '=')) {
+	    $filename = str_replace(['/ST_TEST/', '/'], ['', '_'], $file);
             $file = ROOT_PATH . $file;
             Header("Content-type: application/octet-stream");
             Header("Accept-Ranges: bytes");
             Header("Accept-Length:" . filesize($file));
             Header("Content-Length:" . filesize($file));
-            Header("Content-Disposition: attachment; filename=" . basename($file));
+            Header("Content-Disposition: attachment; filename=" . $filename);
             readfile($file);
-            die();
+            exit;
         }
         return resp('暂时无法下载哦', 20191118206);
     }
