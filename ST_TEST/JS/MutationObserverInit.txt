@@ -6,7 +6,7 @@
         callback callback> 观察到改变后回调改函数，该函数会被传递mutationLists: MutationRecord对象，包含被改变的元素，改变方式等属性;observer: 观察到节点改变的观察者实例
         + 创建一个观察者实例
 
-# observer实例方法
+## observer实例方法
     observe
         targetNode DOM> 被监听的节点
         config Object> observerConfig监听配置
@@ -15,7 +15,7 @@
     disconnect
         + 停止观测目标节点
 
-## observerConfig
+### observerConfig
 
     attributeFilter
         + 可选， 要监视的特定属性名称的数组。如果未包含此属性，则对所有属性的更改都会触发变动通知。无默认值
