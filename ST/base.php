@@ -9,7 +9,7 @@ if (!file_exists(RUNTIME_PATH)) mkdir(RUNTIME_PATH, 0777, false);
 // 兼容配置
 define('ST_EXT', 'txt');
 define('SCRIPT_EXT', 'class.php');
-define('WEB_EOL', '。&emsp;');    // web下详情的换行方式
+define('WEB_EOL', '。 ');    // web下详情的换行方式
 define('SYS_EOL', "\n");
 
 // 异常处理
