@@ -7,7 +7,7 @@ git clone https://github.com/eoogo/Hello && docker run -itd -v `pwd`/Hello/:/var
 ```
 
 手机端为选择题，PC每题需要手动输入答案  
-*建立文件夹时文件名每个 _ 表示一个层级*
+*建立文件夹时文件名每个 _ 表示一个层级*  
 **注意这里的`tab`是4个空格，而不是制表符，否则不解析**
 ```
 ~ 标题 ~
