@@ -8,13 +8,7 @@
     transition: all .5s;
 }
 
-@font-face {
-    font-family: zhuziAwan;
-    src: url("/resource/font/zhuziAwan.ttf");
-}
-
 body {
-    font-family: zhuziAwan;
     cursor: default;
 }
 
