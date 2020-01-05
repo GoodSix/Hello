@@ -271,6 +271,12 @@
         requestAnimationFrame(r);
     }()
 
+    let hint = sessionStorage.getItem('hint');
+    if (hint) {
+        swal('', hint);
+	sessionStorage.removeItem('hint');
+    }
+
     let eventBus = new Vue;
 
     new Vue({
@@ -375,10 +381,8 @@
                             this.n();
                         }, () => {
                             window.open('/api.php' + sessionStorage.getItem('download'));
-                            swal('', '该文件内容存在错误，请重新编辑。', 'error')
-                            .then(() => {
-                                location.reload();
-                            });
+		            sessionStorage.setItem('hint', '该文件内容存在错误，请重新编辑。');
+                            location.reload();
                         });
                     },
                     // 进入下一题
