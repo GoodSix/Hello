@@ -1,0 +1,19 @@
+# 键约束
+
+    constrant 外键名称 foreign key(外键) references 参考表(参考字段)
+        + 外键关联
+
+    create index 键名称 on 参考表(参考字段)
+        + 使用create语法创建普通索引
+
+    alter table 参考表 add index 键名称(参考表)
+        + 使用alter语法创建普通索引
+
+    alter table 参考表 add primary key (参考字段)
+        + 创建主键索引
+
+    create unique index 键名称 on 参考表(参考字段)
+        + 使用create语法创建唯一索引
+
+    alter table 参考表 add unique 键名称(参考字段)
+        + 使用alter语法创建唯一索引
