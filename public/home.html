@@ -39,7 +39,7 @@
 
         axios.defaults.headers.common['x_requested_with'] = 'XMLHttpRequest';
 
-        function req(url, param = null, func) {
+        function req(url, param = null, func, err = null) {
             if (!sessionStorage['token']){
                 axios.get('/api.php/filelist').then(res => {
                     sessionStorage['token'] = res.headers.token;
@@ -62,6 +62,8 @@
                         if (func) {
                             func(res.data.data, res.data);
                         }
+                    }else if(typeof err == 'function') {
+                        err();
                     }else {
                         if (res.data.err == 1005) {
                             sessionStorage.removeItem('token');
@@ -263,11 +265,11 @@
 </template>
 
 <script type="text/javascript">
-    ~function r(){
-        console.clear();
-        debugger
-        requestAnimationFrame(r);
-    }()
+    // ~function r(){
+    //     console.clear();
+    //     debugger
+    //     requestAnimationFrame(r);
+    // }()
 
     let eventBus = new Vue;
 
@@ -358,18 +360,25 @@
                     }
                 },
                 methods: {
-                    start() {
+                    start(event) {
                         req('/start/getTitle', {
                             file: sessionStorage.getItem('file'),
                         }, (data, d) => {
                             this.title = d.msg;
-                        });
+                        }, () => {}); // 如果标题获取失败忽略
+                        // 获取内容
                         req('/start/getst', {
                             file: sessionStorage.getItem('file'),
                             param: isMobile? 2: 1
                         }, data => {
                             this.list = data;
                             this.n();
+                        }, () => {
+                            window.open('/api.php' + sessionStorage.getItem('download'));
+                            swal('', '该文件内容存在错误，请重新编辑。', 'error')
+                            .then(() => {
+                                location.reload();
+                            });
                         });
                     },
                     // 进入下一题
@@ -549,7 +558,9 @@
                         if (typeof next != 'string'){
                             this.catalog = next;
                         }else {
+                            next = next.split('-');
                             sessionStorage.setItem('file', key);
+                            sessionStorage.setItem('download', next[1]);
                             eventBus.$emit('title', '练习');
                             eventBus.$emit('page-left', 'home');
                             eventBus.$emit('page-right', 'right-analyze');
