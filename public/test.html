@@ -1,0 +1,91 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <title>Test</title>
+    <style>
+        * {
+            margin: 0px;
+            padding: 0px;
+            border: 0px;
+        }
+
+        ::-webkit-scrollbar {
+            width: 5px;
+            background: #a61000;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #ff5a5f;
+        }
+
+        :root {
+            --nav-height: 0px;
+        }
+
+        #nav {
+            height: var(--nav-height);
+        }
+
+        #coding {
+            height: calc(100vh - var(--nav-height));
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+        #coding > div, #coding > iframe {
+            height: 50%;
+            width: 50%;
+        }
+
+        #coding > div::before {
+            content: '';
+            color: white;
+            font-size: 1.5rem;
+            position: absolute;
+            right: 0px;
+            z-index: 1;
+        }
+        #coding > #html::before {content: 'HTML'}
+        #coding > #css::before {content: 'CSS'}
+        #coding > #javascript::before {content: 'JS'}
+    </style>
+    <script src="https://pagecdn.io/lib/ace/1.4.7/ace.js" type="text/javascript" charset="utf-8"></script>
+    <script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js"></script>
+</head>
+<body>
+
+<div id="nav">
+
+</div>
+<div id="coding">
+    <div id="html" data-render="div"></div>
+    <div id="css" data-render="style"></div>
+    <div id="javascript" data-render="script"></div>
+    <iframe id="test-render" src="/resource/html/test.html" frameborder="0"></iframe>
+</div>
+
+</body>
+<script>
+    let editor = [];
+    let i = 0;
+    $('#coding > div').each(function () {
+        editor[i] = ace.edit($(this).attr("id"));
+        editor[i].setTheme($(this).data("theme") || "ace/theme/dracula");
+        editor[i].session.setMode("ace/mode/" + $(this).attr("id"));
+        editor[i].mode = $(this).data("render");
+        i++;
+    });
+
+    let demo = document.getElementById("test-render");
+    window.onkeydown = function (event) {
+        for (i of editor) {
+            console.log(demo.contentDocument.getElementsByTagName(i.mode)[0].innerHTML = i.getValue())
+        }
+        if (event.code == 'KeyS' && event.ctrlKey) {
+            return false;
+        }
+    }
+</script>
+</html>
