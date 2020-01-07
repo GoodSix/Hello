@@ -1,0 +1,322 @@
+# Available commands
+
+    help
+        + 显示命令帮助
+
+    list
+        + 列出命令
+
+
+# admin
+
+    admin:user:create
+        + 创建一个管理员
+
+    admin:user:unlock
+        + 解锁管理员帐户
+
+
+# app
+
+    app:config:dump
+        + 创建应用程序转储
+
+    app:config:import
+        + 将数据从共享配置文件导入适当的数据存储
+
+    app:config:status
+        + 检查配置传播是否需要更新
+
+
+# cache
+
+    cache:clean
+        + 清除缓存类型
+
+    cache:disable
+        + 禁用缓存类型
+
+    cache:enable
+        + 启用缓存类型
+
+    cache:flush
+        + 刷新缓存类型使用的缓存存储
+
+    cache:status
+        + 检查缓存状态
+
+
+# catalog
+
+    catalog:images:resize
+        + 创建调整大小的产品图像
+
+    catalog:product:attributes:cleanup
+        + 删除未使用的产品属性。
+
+
+# config
+
+    config:sensitive:set
+        + 设置敏感的配置值
+
+    config:set
+        + 更改系统配置
+
+    config:show
+        + 显示给定路径的配置值。如果未指定路径，将显示所有保存的值
+
+
+# cron
+
+    cron:install
+        + 为当前用户生成并安装crontab
+
+    cron:remove
+        + 从crontab中删除任务
+
+    cron:run
+        + 按计划运行作业
+
+
+# customer
+
+    customer:hash:upgrade
+        + 根据最新算法升级客户的哈希
+
+
+# deploy
+
+    deploy:mode:set
+        + 设置应用模式.
+
+    deploy:mode:show
+        + 显示当前的应用模式.
+
+
+# dev
+
+    dev:di:info
+        + 提供有关命令的依赖注入配置的信息.
+
+    dev:profiler:disable
+        + 禁用分析器.
+
+    dev:profiler:enable
+        + 启用分析器.
+
+    dev:query-log:disable
+        + 禁用数据库查询日志
+
+    dev:query-log:enable
+        + 启用数据库查询日志
+
+    dev:source-theme:deploy
+        + 收集和发布主题的源文件.
+
+    dev:template-hints:disable
+        + 禁用前端模板提示。 可能需要缓存刷新.
+
+    dev:template-hints:enable
+        + 启用前端模板提示。 可能需要缓存刷新.
+
+    dev:tests:run
+        + 运行测试
+
+    dev:urn-catalog:generate
+        + 生成URN到* .xsd映射的目录，以使IDE突出显示xml.
+
+    dev:xml:convert
+        + 使用XSL样式表转换XML文件
+
+
+# downloadable
+
+    downloadable:domains:add
+        + 将域添加到可下载的域白名单
+
+    downloadable:domains:remove
+        + 从可下载域白名单中删除域
+
+    downloadable:domains:show
+        + 显示可下载域白名单
+
+
+# i18n
+
+    i18n:collect-phrases
+        + 在代码库中发现短语
+
+    i18n:pack
+        + 保存语言包
+
+    i18n:uninstall
+        + 卸载语言包
+
+
+# indexer
+
+    indexer:info
+        + 显示允许的索引器
+
+    indexer:reindex
+        + 重新索引数据
+
+    indexer:reset
+        + 将索引器状态重置为无效
+
+    indexer:set-dimensions-mode
+        + 设置分度器尺寸模式
+
+    indexer:set-mode
+        + 设置索引模式类型
+
+    indexer:show-dimensions-mode
+        + 显示索引器尺寸模式
+
+    indexer:show-mode
+        + 显示索引模式
+
+    indexer:status
+        + 显示索引器的状态
+
+
+# info
+
+    info:adminuri
+        + 显示Magento管理员URI
+
+    info:backups:list
+        + 打印可用备份文件列表
+
+    info:currency:list
+        + 显示可用货币列表
+
+    info:dependencies:show-framework
+        + 显示对Magento框架的依赖关系数量
+
+    info:dependencies:show-modules
+        + 显示模块之间的依赖关系数
+
+    info:dependencies:show-modules-circular
+        + 显示模块之间的循环依赖关系数
+
+    info:language:list
+        + 显示可用语言区域列表
+
+    info:timezone:list
+        + 显示可用时区列表
+
+
+# maintenance
+
+    maintenance:allow-ips
+        + 设置维护模式豁免IP
+
+    maintenance:disable
+        + 禁用维护模式
+
+    maintenance:enable
+        + 启用维护模式
+
+    maintenance:status
+        + 显示维护模式状态
+
+
+# module
+
+    module:disable
+        + 禁用指定的模块
+
+    module:enable
+        + 启用指定的模块
+
+    module:status
+        + 显示模块状态
+
+    module:uninstall
+        + 卸载由composer安装的模块
+
+
+# newrelic
+
+    newrelic:create:deploy-marker
+        + 检查部署队列中的条目并创建适当的部署标记.
+
+
+# sampledata
+
+    sampledata:deploy
+        + 部署样本数据模块
+
+    sampledata:remove
+        + 从composer.json中删除所有示例数据包
+
+    sampledata:reset
+        + 重置所有示例数据模块以重新安装
+
+
+# setup
+
+    setup:backup
+        + 备份Magento应用程序代码库，媒体和数据库
+
+    setup:config:set
+        + 创建或修改部署配置
+
+    setup:cron:run
+        + 运行计划用于安装应用程序的cron作业
+
+    setup:db-data:upgrade
+        + 在数据库中安装和升级数据
+
+    setup:db-schema:upgrade
+        + 安装和升级数据库架构
+
+    setup:db:status
+        + 检查数据库架构或数据是否需要升级
+
+    setup:di:compile
+        + 生成DI配置以及可以自动生成的所有缺少的类
+
+    setup:install
+        + 安装Magento应用程序
+
+    setup:performance:generate-fixtures
+        + 产生固定装置
+
+    setup:rollback
+        + 回滚Magento应用程序代码库，媒体和数据库
+
+    setup:static-content:deploy
+        + 部署静态视图文件
+
+    setup:store-config:set
+        + 安装商店配置。 从2.2.0版开始不推荐使用。 使用config：set代替
+
+    setup:uninstall
+        + 卸载Magento应用程序
+
+    setup:upgrade
+        + 升级Magento应用程序，数据库数据和架构
+
+
+# store
+
+    store:list
+        + 显示商店列表
+
+    store:website:list
+        + 显示网站列表
+
+
+# theme
+
+    theme:uninstall
+        + 卸载主题
+
+
+# varnish
+
+    varnish:vcl:generate
+        + 生成Varnish VCL并将其回显到命令行

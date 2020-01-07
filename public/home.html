@@ -33,7 +33,7 @@
             isMobile = isIphone || isAndroid;
 
 
-        document.onselectstart = () => false;
+        document.onselectstart = e => e.target.tagName == 'TEXTAREA';
         // window.onbeforeunload = () => false;
         window.oncontextmenu = () => false;
 
@@ -172,7 +172,7 @@
             <div class="answer">
                 <!-- 回答题 -->
                 <div v-if="current.issue.type == 'text'">
-                    <textarea @keypress.enter.prevent="n()" v-model="answer"></textarea>
+                    <textarea onpaste="return false"  @keypress.enter.prevent="n()" v-model="answer"></textarea>
                 </div>
                 <!-- 单选题 -->
                 <div v-else-if="current.issue.type == 'radio'" :class="{'select':true, 'mobile-radio': isMobile}">
