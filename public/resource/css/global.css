@@ -8,6 +8,10 @@
     transition: all .5s;
 }
 
+html,body {
+    overflow: hidden;
+}
+
 body {
     cursor: default;
 }
@@ -395,7 +399,14 @@ keep-live > div {
         width: 88vw;
     }
 
-    .right > div {
+    .right > div, #upload_file + label {
         display: none;
     }
+}
+
+.left .reduce {
+    background-color: white;
+    background-image: url(https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1578383713515&di=ab993f6ba50bfdc17d75bfc323e0c8ac&imgtype=0&src=http%3A%2F%2Fimg.111cn.net%2Fattachment%2Fart%2F167431%2F697278c88d.gif);
+    background-repeat: no-repeat;
+    background-position: 50% 100%;
 }

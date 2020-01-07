@@ -1,13 +1,4 @@
-# Available commands
-
-    help
-        + 显示命令帮助
-
-    list
-        + 列出命令
-
-
-# admin
+# admin删除或解锁管理员
 
     admin:user:create
         + 创建一个管理员
@@ -15,8 +6,7 @@
     admin:user:unlock
         + 解锁管理员帐户
 
-
-# app
+# app应用管理
 
     app:config:dump
         + 创建应用程序转储
@@ -27,8 +17,7 @@
     app:config:status
         + 检查配置传播是否需要更新
 
-
-# cache
+# cache缓存管理
 
     cache:clean
         + 清除缓存类型
@@ -45,8 +34,7 @@
     cache:status
         + 检查缓存状态
 
-
-# catalog
+# catalog分类管理
 
     catalog:images:resize
         + 创建调整大小的产品图像
@@ -54,8 +42,7 @@
     catalog:product:attributes:cleanup
         + 删除未使用的产品属性。
 
-
-# config
+# config系统配置
 
     config:sensitive:set
         + 设置敏感的配置值
@@ -66,8 +53,7 @@
     config:show
         + 显示给定路径的配置值。如果未指定路径，将显示所有保存的值
 
-
-# cron
+# cron定时任务管理
 
     cron:install
         + 为当前用户生成并安装crontab
@@ -78,12 +64,10 @@
     cron:run
         + 按计划运行作业
 
-
-# customer
+# customer用户管理
 
     customer:hash:upgrade
         + 根据最新算法升级客户的哈希
-
 
 # deploy
 
@@ -93,8 +77,7 @@
     deploy:mode:show
         + 显示当前的应用模式.
 
-
-# dev
+# dev开发者
 
     dev:di:info
         + 提供有关命令的依赖注入配置的信息.
@@ -129,7 +112,6 @@
     dev:xml:convert
         + 使用XSL样式表转换XML文件
 
-
 # downloadable
 
     downloadable:domains:add
@@ -141,8 +123,7 @@
     downloadable:domains:show
         + 显示可下载域白名单
 
-
-# i18n
+# i18n语言包管理
 
     i18n:collect-phrases
         + 在代码库中发现短语
@@ -153,8 +134,7 @@
     i18n:uninstall
         + 卸载语言包
 
-
-# indexer
+# indexer索引管理
 
     indexer:info
         + 显示允许的索引器
@@ -180,8 +160,7 @@
     indexer:status
         + 显示索引器的状态
 
-
-# info
+# info网站信息
 
     info:adminuri
         + 显示Magento管理员URI
@@ -207,8 +186,7 @@
     info:timezone:list
         + 显示可用时区列表
 
-
-# maintenance
+# maintenance网站管理
 
     maintenance:allow-ips
         + 设置维护模式豁免IP
@@ -222,8 +200,7 @@
     maintenance:status
         + 显示维护模式状态
 
-
-# module
+# module模块管理
 
     module:disable
         + 禁用指定的模块
@@ -237,14 +214,12 @@
     module:uninstall
         + 卸载由composer安装的模块
 
-
 # newrelic
 
     newrelic:create:deploy-marker
         + 检查部署队列中的条目并创建适当的部署标记.
 
-
-# sampledata
+# sampledata示例数据
 
     sampledata:deploy
         + 部署样本数据模块
@@ -255,8 +230,7 @@
     sampledata:reset
         + 重置所有示例数据模块以重新安装
 
-
-# setup
+# setup系统管理
 
     setup:backup
         + 备份Magento应用程序代码库，媒体和数据库
@@ -300,8 +274,7 @@
     setup:upgrade
         + 升级Magento应用程序，数据库数据和架构
 
-
-# store
+# store商店管理
 
     store:list
         + 显示商店列表
@@ -309,12 +282,10 @@
     store:website:list
         + 显示网站列表
 
-
-# theme
+# theme主题管理
 
     theme:uninstall
         + 卸载主题
-
 
 # varnish
 

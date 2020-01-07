@@ -1,0 +1,64 @@
+# 框架亮点
+
+    Magento\Framework\DataObject
+        + 提供用于通过魔术方法存储和检索数据的标准功能。这是许多Magento类的基类
+
+    Magento\Framework\Model
+        + 包含几乎所有Magento Model类都从其扩展的基本Model类
+
+    Magento\Framework\Model\AbstractModel
+        + 抽象的Model类
+
+    Magento\Framework\Model\ResourceModel\AbstractResource
+        + 抽象的资源Model类
+
+    Magento\Framework\Controller
+        + 包含有助手返回不同类型结果的类（例如JSON和重定向）
+        + tips: 控制器
+
+    Magento\Framework\View
+        + 包含用于呈现页面和布局的代码
+
+    Magento\Framework\Data
+        + 包含处理表单的其他类
+
+    Magento\Framework\Url
+        + 包含在magento中查找其他页面的代码
+
+# 其他命名空间
+
+    Magento\Framework\ObjectManager
+        + 用于提供以来项注入
+
+    Magento\Framework\App
+        + 包含具有有关Magento应用程序只是的框架代码。此代码引导应用程序并读取初始配置。
+        + 它还包含命令行工具，web应用程序和cron作业的入口点。最后，它在提供部署上下文的同时路由请求
+        + （例如，读取数据库配置，语言和缓存系统的配置）
+
+    Magento\Framework\Api
+        + 包含用于通过系统扩展对象 （即，可以扩展通过Magento Marketplace扩展添加新数据的对象）的高级功能的基类
+
+    Magento\Framework\Config
+        + 包含通用配置读取器。每个配置文件都有自己的专用阅读器，用于扩展这些类
+
+    Magento\Framework\Filesystem
+        + 包含处理从文件系统读取和写入文件的类
+
+    Magento\Framework\HTTP\PhpEevironment
+        + 环境变量类
+
+    Magento\Framework\Session
+        + session类
+
+    Magento\Framework\Stdlib\Cookie
+        + cookie类
+        + 在此处找到用于处理HTTP请求/响应以及会话/cookie的代码
+
+    Magento\Framework\Exception
+        + 包含整个Magento代码库中抛出的基本异常
+
+    Magento\Framework\Event
+        + 包含发布同步事件的代码，该代码在这里处理任何Magento事件的观察者
+
+    Magento\Framework\Validator
+        + 包含验证数据（货币，非空）并处理任何Magento事件的观察者的代码
