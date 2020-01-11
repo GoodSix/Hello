@@ -200,7 +200,7 @@
 <template id="right-catalog">
     <div style="position: relative;">
         <ul class="catalog">
-            <li v-for="(item,key) in path || catalog" :key="key" @click="enter(key)" :title="typeof item != 'string'? key: item.split('-')[0]">
+            <li v-for="(item,key) in path || catalog" :key="key" v-if="key != '.'" @click="enter(key)" :title="typeof item != 'string'? key: item.split('-')[0]">
                 <span v-if="typeof item != 'string'">
                     <img src="/resource/img/dir.png" alt="dir">{{ key }}
                 </span>
@@ -210,6 +210,9 @@
                     <a onclick="event.stopPropagation();" :href="'/api.php' + item.split('-')[1]" target="_blank" title="将服务端的文件下载到本地，下载后可重新编辑上传" class="download">↓</a>
                 </span>
             </li>
+	    <li v-else v-for="i in item">
+		    asdsa
+	    </li>
         </ul>
         <div style="position: absolute;right: 15px;bottom: 10px;cursor: default">
             <span style="color: #ff5a50aa;cursor:pointer;" onclick="window.open('/test.html')">在线编辑器</span>
@@ -267,12 +270,6 @@
 </template>
 
 <script type="text/javascript">
-    ~function r(){
-        console.clear();
-        debugger
-        requestAnimationFrame(r);
-    }()
-
     let hint = sessionStorage.getItem('hint');
     if (hint) {
         swal('', hint);
