@@ -5,8 +5,10 @@ abstract class Parse {
 
     private $st = 'ccheng';
     private $file_md5 = '';
+    protected $file_name = '';
 
     public function __construct(string $st) {
+        $this ->file_name = $st;
         if (is_file($st) && is_readable($st)) {
             $this ->file_md5 = md5_file($st);
             $st = file_get_contents($st);
@@ -36,7 +38,7 @@ abstract class Parse {
                 }
             }
         }
-        return $title;
+        return $title? $title: basename($this ->file_name);
     }
 
     /**

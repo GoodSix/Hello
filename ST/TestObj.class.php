@@ -248,7 +248,7 @@ class TestObj extends Parse{
         $st['catalog'] = [];
         while($catalog !== null) {
             $st['catalog'][] = $catalog;
-            if ($catalog['pid'] !== false)
+            if (isset($catalog['pid']) && $catalog['pid'] !== false)
                 $catalog = $this ->getCatalogById($catalog['pid']);
             else $catalog = null;
         }
