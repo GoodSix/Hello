@@ -1,0 +1,43 @@
+# Dockerfile
+
+    FROM
+        + 镜像来源
+
+    MAINTAINER
+        + 作者信息
+
+    RUN
+        + 构建镜像时运行的shell命令
+
+    CMD
+        + 启动容器时执行的shell命令
+
+    EXPOSE
+        + 声明容器需要的端口
+
+    ENV
+        + 设置容器内环境变量
+
+    ADD
+        + 拷贝文件或文件夹到镜像中， 会自动解压， 如果时URL会自动下载
+
+    COPY
+        + 拷贝文件或文件夹到镜像中， 不会自动解压
+
+    ENTRYPOINT
+        + 启动容器时执行的shell， 同CMD类似，- 不会被docker run命令所执行的参数覆盖
+
+    VOLUME
+        + 声明容器需要被挂载的目录
+
+    USER
+        + 为RUN、CMD和ENTRYPOINT执行shell指定运行用户
+
+    WORKDIR
+        + 设置工作目录， 对RUN、CMD、ENTRYPOINT有效
+
+    ARG
+        + 在构建镜像时指定一些参数， 如
+        + ARG user
+        + USER $user
+        + docker build --build-arg user=xxx

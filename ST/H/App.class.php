@@ -92,7 +92,8 @@ class H_App {
 
             // 尝试根据语法获取标题，如果获取不到则使用文件名用作标题
             $title = (new TestObj($value)) ->getTitle();
-            if (!is_string($title)) $title = pathinfo($value, PATHINFO_FILENAME);
+            if (!is_string($title)) $title = pathinfo($value, PATHINFO_BASENAME);
+	    $title = rtrim($title, '.' . ST_EXT);
             $title .= '-/download/' . rtrim(base64_encode(str_replace([ROOT_PATH, '\\'], ['', '/'], $value)), '=');
             // 数据生成
             eval("\$arr[{$p}][$i] = '$title';");
