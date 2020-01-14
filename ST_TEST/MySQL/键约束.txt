@@ -1,3 +1,4 @@
+
 # 键约束
 
     constrant 外键名称 foreign key(外键) references 参考表(参考字段)

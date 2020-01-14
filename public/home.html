@@ -204,7 +204,7 @@
                 <li v-for="(i, k) in item" :key="k" @click="enter(k)" :title="typeof i != 'string'? key: i.split('-')[0]">
                     <img src="/resource/img/file.png" alt="file">
                     {{ i.split('-')[0] }}
-                    <a onclick="event.stopPropagation();" :href="'/api.php' + i.split('-')[1]" target="_blank" title="将服务端的文件下载到本地，下载后可重新编辑上传" class="download">↓</a>
+                    <a onclick="event.stopPropagation();" :href="'/api.php' + i.split('-')[1]" title="将服务端的文件下载到本地，下载后可重新编辑上传" class="download">↓</a>
                 </li>
             </span>
             <li v-for="(item,key) in path || catalog" :key="key" v-if="key != '.'" @click="enter(key)" :title="typeof item != 'string'? key: item.split('-')[0]">
@@ -214,11 +214,11 @@
                 <span v-else>
                     <img src="/resource/img/file.png" alt="file">
                     {{ item.split('-')[0] }}
-                    <a onclick="event.stopPropagation();" :href="'/api.php' + item.split('-')[1]" target="_blank" title="将服务端的文件下载到本地，下载后可重新编辑上传" class="download">↓</a>
+                    <a onclick="event.stopPropagation();" :href="'/api.php' + item.split('-')[1]" title="将服务端的文件下载到本地，下载后可重新编辑上传" class="download">↓</a>
                 </span>
             </li>
         </ul>
-        <div style="position: absolute;right: 15px;bottom: 10px;cursor: default">
+        <div style="position: fixed;right: 10%;bottom: 8%;cursor: default;">
             <span style="color: #ff5a50aa;cursor:pointer;" onclick="window.open('/test.html')">在线编辑器</span>
             <span style="color: #ffcfa1"> | </span>
             <span style="color: #ff5a50aa;cursor:pointer;" onclick="window.open('https://github.com/eoogo/Hello/blob/master/README.md')">新增文件规则</span>
