@@ -73,7 +73,25 @@ class TestObj extends Parse{
             if ($index !== null) {
                 return $this->parseIssue($this ->st[$index] ?? [], $type[!shuffle($type)]);
             }else{
-                shuffle($this ->st);
+                // shuffle($this ->st);
+                $group = array_column($this ->st, 'catalog');
+                $shuffle = [];
+                $i = 0;
+                foreach ($group as $item) {
+                    $shuffle[$item][] = $this ->st[$i];
+                    $i ++;
+                }
+                // 分类随机，分类下的内容随机
+                shuffle($shuffle);
+                foreach ($shuffle as $key => $item) {
+                    shuffle($shuffle[$key]);
+                }
+                $this ->st = [];
+                foreach ($shuffle as $item) {
+                    foreach ($item as $i) {
+                        $this ->st[] = $i;
+                    }
+                }
                 return array_map(function ($item) use(&$type) {
                     return $this ->parseIssue($item, $type[!shuffle($type)]);
                 }, $this ->st);

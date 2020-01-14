@@ -200,7 +200,7 @@ keep-live > div {
 .st > .progress > li {
     /*float: left;*/
     display: inline-block;
-    width: 25px;
+    width: 20px;
     height: 20px;
     line-height: 20px;
     text-align: center;
@@ -210,6 +210,7 @@ keep-live > div {
     border-radius: 50%;
     cursor: pointer;
     color: white;
+    text-indent: -2px;
 }
 
 /* 回答错误时候的球球的颜色 */
