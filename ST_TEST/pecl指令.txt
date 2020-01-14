@@ -1,0 +1,97 @@
+
+# pecl指令
+
+    build
+        + 从C源代码构建扩展
+    bundle
+        + 打开Pecl包装
+    channel-add
+        + 添加频道
+    channel-alias
+        + 指定频道名称的别名
+    channel-delete
+        + 从列表中删除频道
+    channel-discover
+        + 从其服务器初始化频道
+    channel-info
+        + 检索频道上的信息
+    channel-login
+        + 连接并验证到远程通道服务器
+    channel-logout
+        + 从远程通道服务器注销
+    channel-update
+        + 更新现有频道
+    clear-cache
+        + 清除Web服务缓存
+    config-create
+        + 创建一个默认配置文件
+    config-get
+        + 显示一个设置
+    config-help
+        + 显示有关设置的信息
+    config-set
+        + 修改设置
+    config-show
+        + 显示所有设置
+    convert
+        + 将package.xml 1.0转换为package.xml 2.0格式
+    cvsdiff
+        + 对包中的所有文件运行“ cvs diff”
+    cvstag
+        + 设置CVS发行标签
+    download
+        + 下载包
+    download-all
+        + 从默认频道下载每个可用软件包
+    info
+        + 显示有关包装的信息
+    install
+        + 安装套件
+    list
+        + 列出默认频道中已安装的软件包
+    list-all
+        + 列出所有包裹
+    list-channels
+        + 列出可用频道
+    list-files
+        + 列出已安装软件包中的文件
+    list-upgrades
+        + 列出可用的升级
+    login
+        + 连接并验证到远程服务器[不推荐使用channel-login]
+    logout
+        + 从远程服务器注销[不推荐使用channel-logout]
+    makerpm
+        + 从PEAR包构建RPM规范文件
+    package
+        + 构建包
+    package-dependencies
+        + 显示软件包依赖性
+    package-validate
+        + 验证包装一致性
+    pickle
+        + 构建PECL包
+    remote-info
+        + 有关远程软件包的信息
+    remote-list
+        + 列出远程软件包
+    run-scripts
+        + 运行软件包附带的安装后脚本
+    run-tests
+        + 运行回归测试
+    search
+        + 搜索远程软件包数据库
+    shell-test
+        + Shell脚本测试
+    sign
+        + 签名程序包分发文件
+    svntag
+        + 设置SVN发布标签
+    uninstall
+        + 卸载程序包
+    update-channels
+        + 更新频道列表
+    upgrade
+        + 升级软件包
+    upgrade-all
+        + 升级所有软件包[不推荐使用不带参数的调用升级]

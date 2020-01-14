@@ -1,0 +1,281 @@
+
+# 字符串
+
+    set
+        key > 键
+        value > 值
+        + 设置一个键值对
+
+    setex
+        key > 键
+        timeout > 有效期，以秒为单位
+        value > 值
+        + 设置一个指定有效期的键值对
+
+    setnx
+        key > 键
+        value > 值
+        + 设置一个不会覆盖的键值对
+
+    mset
+        key > 键
+        value > 值
+        + 批量设置键值对
+
+    msetnx
+        key > 键
+        value > 值
+        + 批量设置不会覆盖的键值对
+
+    get
+        key > 键
+        + 获取指定的值
+
+    mget
+        key > 键
+        + 批量获取值
+
+## 字符串操作
+
+    setrange
+        key > 键
+        offset > 起始位置，0开始
+        value > 从offset开始使用该字符串替换
+        + 从指定位置开始替换字符串
+
+    getrange
+        key > 键
+        offset > 起始位置
+        end > 结束位置
+        + 获取指定范围内的值
+
+    getset
+        key > 键
+        value > 值
+        + 在获取指定值的同时设置新值
+
+    incr
+        key > 键
+        + 让指定的值自增1
+
+    incrby
+        key > 键
+        increment > 增加值
+        + 让指定的值增加指定数量
+
+    decr
+        key > 键
+        + 让指定的值自减1
+
+    decrby
+        key > 键
+        decrement > 减少值
+        + 让指定的值减少指定数量
+
+    append
+        key > 键
+        value > 追加值
+        + 追加字符串
+
+    strlen
+        key > 键
+        + 获取指定值的长度
+
+# Hash表操作
+
+    hset
+        key > hash库:hash表
+        field > 键
+        value > 值
+        + 添加一个值
+
+    hmset
+        key > hash库:hash表
+        field > 键
+        value > 值
+        + 在指定hash库下的指定hash表下批量增加值
+
+    hsetnx
+        key > hash库:hash表
+        field > 键
+        value > 值
+        + 在指定hash库下的指定hash表下批量增加不会覆盖的值
+
+    hget
+        key > hash库:hash表
+        + 获取指定的数据
+
+    hmget
+        key > hash库:hash表
+        field > 需要获取的值的键，可以有多个
+        + 批量获取hash表数据
+
+    hexists
+        key > hash库:hash表
+        field > 要检测的键
+        + 检测hash表中是否存在指定的键
+
+    hlen
+        key > hash库:hash表
+        + 获取指定hash表中的数据数量
+
+    hdel
+        key > hash库:hash表
+        field > 键
+        + 删除hash表中的指定数据
+
+    hkeys
+        key > hash库:hash表
+        + 获取hash表中的所有键
+
+    hvals
+        key > hash库:hash表
+        + 获取hash表中的所有值
+
+    hgetall
+        key > hash库:hash表
+        + 获取hash表中的所有的键和值
+    
+
+# List链表操作
+
+    lpush
+        key > 链表
+        value > 一个或多个值
+        + 向链表左侧压入一个或多个数据
+
+    rpush
+        key > 链表
+        value > 一个或多个值
+        + 向链表右侧压入一个或多个值
+
+    linsert
+        key > 链表
+
+
+    lrange
+        key > 链表
+        start > 起始位置
+        stop > 结束位置
+        + 获取链表数据，从起始到结束
+
+    lset
+        key > 链表
+        index > 下标
+        value > 值
+        + 修改指定链表指定下标的值
+
+    lrem
+        key > 链表
+        count > 下标
+        value > 值
+        + 删除指定下标之前所有的指定值
+
+    ltrim
+        key > 链表
+        start > 起始位置(0开始)
+        stop > 结束位置(右侧开始)
+        + 删除指定范围的值(从右侧开始)
+
+    lpop
+        key > 链表
+        + 从左侧删除一条数据
+
+    rpop
+        key > 链表
+        + 从右侧删除一条数据
+
+    lindex
+        key > 链表
+        index > 指定下标
+        + 获取链表中指定下标的值
+
+    llen
+        key > 链表
+        + 获取链表中的数据数量
+
+    rpoplpush
+        source > 链表1
+        dstination > 链表2
+        + 将链表1的第一条数据移动到链表2的末尾处
+
+# set无序集合
+
+    sadd
+        key > 集合
+        member > 值
+        + 向集合添加一个或多个成员
+
+    scard
+        key > 集合
+        + 获取集合的成员数
+
+    sdiff
+        key > 集合
+        + 比较两个或多个集合的差集
+
+    sinter
+        key > 集合
+        + 比较两个或多个集合的交集
+
+    sismember
+        key > 集合
+        member > 值
+        + 检测集合中是否存在指定的值
+
+    smembers
+        key > 集合
+        + 获取集合中的所有成员
+
+    spop
+        key > 集合
+        + 获取并删除集合中的随机一个成员
+
+    srem
+        key > 集合
+        member > 成员
+        + 删除集合中的一个或多个成员
+
+# zset有序集合
+
+    zadd
+        key > 集合
+        core > 下标
+        member > 值
+        + 向有序集合添加一个或多个成员，或者更新已存在的成员分数
+
+    zcard
+        key > 集合
+        + 获取有序集合的成员数
+
+    zcount
+        key > 集合
+        min > 最小值
+        max > 最大值
+        + 计算在有序集合中指定区间的成员数
+
+# 全局命令
+
+    keys
+        key > 要检测的键
+        + 搜索指定的键，*是通配符
+
+    del
+        key > 键
+        + 删除指定的数据
+
+    exists
+        key > 要检测的键
+        + 检测指定的键是否存在
+
+    expire
+        key > 键
+        expire > 有效期，以秒为单位
+        + 为指定的数据设置有效期
+
+    ttl
+        key > 键
+        + 获取指定键的有效期
+
+    save
+    	+ 保存数据
