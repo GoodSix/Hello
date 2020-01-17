@@ -128,8 +128,17 @@ class H_App {
 
     public function download($file) {
         if ($file = base64_decode($file . '=')) {
-	    $filename = str_replace(['/ST_TEST/', '/'], ['', '_'], $file);
+            header('Content-type: text/plant;charset=UTF-8');
+            $filename = str_replace(['/ST_TEST/', '/'], ['', '_'], $file);
             $file = ROOT_PATH . $file;
+            if (!file_exists($file)) {
+                header('Content-type: text/html');
+                die(<<<JUMP
+                <h1 style="text-align: center">{$file}不存在</h1>
+            <script>setTimeout(() => history.go(-1), 3000)</script>
+JUMP
+                );
+            }
             Header("Content-type: application/octet-stream");
             Header("Accept-Ranges: bytes");
             Header("Accept-Length:" . filesize($file));

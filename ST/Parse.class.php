@@ -146,15 +146,4 @@ abstract class Parse {
         }
         return $st;
     }
-
-    public function __debugInfo() {
-        return is_array($this ->st)?$this ->st: [
-            '嘿，这是什么时候写的来着，忘记了？',
-            '不知道现在的你是出于什么目的，看到了这段话',
-            '你当初的设计是',
-            '不让直接使用这个类',
-            'TestObj有继承了，重写了这边的方法',
-            '嗯，能看见最好，(●\'◡\'●)',
-        ];
-    }
 }
