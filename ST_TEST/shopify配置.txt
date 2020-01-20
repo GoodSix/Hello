@@ -1,0 +1,116 @@
+{
+	"name": "名称，可多语言",
+	"settings": [
+		{
+			"type": "输入类型",
+			// 如果为header可以用content表示一组
+			// text 单行文本
+			// textarea 简单的文本域
+			// image_picker 选择图片，可以是上传的，也可以是收藏的，或是免费的
+			// radio 单选框，需要包含 options: [ {"label": "说明", "value": "值"} ], 使用default选择一个默认值
+			// select 和单选框同理，options中的对象可以使用group为值分组
+			// checkbox 多选框， 值是true或false
+			// range 范围， min配置最小，max最大，step步长，unit单位
+			// color 颜色选择器
+			// font_picker 字体选择器 用来替代 font的
+			// collection 选择产品分类
+			// product 选择产品
+			// blog 选择博客
+			// page 该下拉列表会自动填充商店中所有页面的名称
+			// link_list 选择网站地图中的链接
+			// url 选择或输入链接
+			// video_url 视频链接 accept(必填)具有该字段接受的URL类型的数组。有效值youtube或vimeo或两者兼而有之。
+			// richtext 允许下划线粗体斜体的文本域，输出HTML
+			// html
+			// article 选择博客
+			// header 分组标识，必须只能包含content
+			// paragraph 段落
+
+			"id": "引用标识符",
+			"label": "输入提示标题，可多语言",
+			"defualt": "默认值",
+			"info": "字段提示",
+			"placeholder": "内容提示"
+		}
+	]
+	// 如果是 sections则schema可以使用
+	"blocks": [ // 定义block，允许执行添加，使用max_block限制最多添加个数
+		{
+			"name": "myBlock",
+			"limit": 1, // 限制添加次数
+			"settings": [
+				{
+					"type": "输入类型",
+					"label": "标题",
+					"id": "标识符",
+					"default": "默认值"
+				}
+			]
+		}
+	],
+	"presets": [ // 在“添加部分”的预览
+		"name": "添加我吧",
+		"category": "所属分类",
+		"max_blocks": 3, // 最多添加3个块
+		"blocks": [
+			{
+				// 引用block
+				"type": "myBlock"
+			}
+		]
+	]
+}
+
+ - ! 在售主题必须包含演示商店，演示商店必须包含
+ 		一种产品在售
+ 		一种产品售罄
+ 		一种产品具有多种产品选择
+ 		一种具有变体图像的产品
+ 		不能包含
+ 			付款、充值
+
+ - ! 指定语言链接 <link href="shanghai.htm" rel="parent" charset="UTF-8" hreflang="zh-Hans" />
+
+主题结构
+assets | 资源存放目录，包括图片样式和js文件，asset_url过滤器表示前缀地址
+config | 用于后台可视化配置的配置，包含一个setting_schema.json和settings_data.json
+layout | 包含主题布局模板，默认情况下为theme.liquid，template文件夹内的所有liquid模板都呈现在主题布局模板content_for_layout内, 模板header部分需要包含 {{ content_for_header }} 以加载后台配置的分析代码
+locales | 语言环境文件，用于提供主题的翻译内容，默认的英语环境文件 en.default.json
+sections | 可以重复利用的模块，可以由主题的用户自定义和重新排序。在末尾处定义 {% schema %} { 配置项 } {% endschema %}用于后台在"部分"的配置，此配置格式和"模板配置"一样
+	在schame中可定义:
+		name | 在“添加部分的预览名称”
+		class | 在页面上这个块会被包含在此类名中
+		tag | 不明所以
+		settings | 配置
+		blocks | 自定义块，用于“添加内容”， 使用"limit"限制最多只能添加该此时
+		max_blocks | 最多能添加的块的数量
+		presets | 预设，使用category划分类，可以预添加block
+		default | 默认内容
+		locales | 定义该块的翻译，如{"locales": {"en": {"title": "title"}, "zh": {"title": "标题"}}}
+snippets | 包含主题的所有liquid摘录文件，这些文件是可以在主题的其他模板中引用的一些代码
+templates | 包含所有的liquid模板
+	costomers | 
+		account | 用于显示访问者客户账户的摘要信息
+		activate_account | 用于激活客户账号信息的表单
+		addresses | 客户使用该模板来管理其在结帐中使用的地址
+		login | 登录页面
+		order | 显示客户账号过去的订单的详细信息
+		register | 客户账号注册页面
+		reset_password | 客户账号找回密码页面
+	404 | 如果访问者输入的url无效，访问者将被定向到该页面
+	article | 呈现单个博客文章的页面。包含文章的完整内容
+	blog | 用于呈现博客页面。该页面的主要目的是列出博客中的文章
+	cart | 提供了访客购物车中商品的概述
+	collection | 此页面的主要目的是列出集合中的产品，这些产品通常以带有产品标题和价格的图像网格的形式呈现
+	gift_card | 在购买时发给客户的礼品卡，发送给客户的电子邮件通知中可以找到模板的URL
+	index | 商店的主页
+	list-collections | 该模板列出了商店中的所有集合。该模板可以通过/collections路由来访问
+	page.contact | 
+	page | 在后台编辑的page将在此模板中展示
+	password | 如果商店需要密码保护，则会在首次进入的时候呈现此页面
+	product | 单个产品的详细信息页面。它包含了一个FORM表单供客户添加商品
+	search | 用于展示商店的搜索结果
+
+
+
+Liquid
