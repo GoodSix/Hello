@@ -380,8 +380,14 @@
                             file: sessionStorage.getItem('file'),
                             param: isMobile? 2: 1
                         }, data => {
-                            this.list = data;
-                            this.n();
+                            if (typeof data['issue'] == 'undefined') {
+                                window.open('/api.php' + sessionStorage.getItem('download'));
+                                sessionStorage.setItem('hint', '该文件内容存在错误，请重新编辑。');
+                                location.reload();
+                            }else {
+                                this.list = data;
+                                this.n();
+                            }
                         }, () => {
                             window.open('/api.php' + sessionStorage.getItem('download'));
 		                    sessionStorage.setItem('hint', '该文件内容存在错误，请重新编辑。');
